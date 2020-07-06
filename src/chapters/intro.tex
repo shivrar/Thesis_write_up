@@ -1,10 +1,10 @@
-    \chapter{Introduction}\label{ch:introduction}
-%    test ~\parencite{pozyx2018pozyx}
+\let\textcircled=\pgftextcircled
+\chapter{Introduction}\label{ch:intro}%    test ~\parencite{pozyx2018pozyx}
 %    \lipsum[2-4]
-    In recent years Unmanned aerial vehicle(UAV) usages has grown exponentially becoming common in industry and households~\parencite{custers2016drones}.
+    \initial{I}n recent years Unmanned aerial vehicle(UAV) usages has grown exponentially becoming common in industry and households~\cite{custers2016drones}.
     A major part of UAV applications is their ability to localise themselves in the given environment with acceptable precision and accuracy.
     This is a common requirement in any robotic system but UAV's are often limited by strict payload requirements and therefore have to rely on sensors that are lightweight and robust.
-    ~\textcite{ardupilotadvanced} gives a good summary of physical components that are used in various vehicles but a UAV system, specifically, a quadrotor system cab be summarised as follows:
+    ~\citep{ardupilotadvanced} gives a good summary of physical components that are used in various vehicles but a UAV system, specifically, a quadrotor system cab be summarised as follows:
     \begin{itemize}
         \item Rotor build - This section contains parts that should be researched based on the size and physical requirements of the drone.
         These include: brushless motors, electronic speed controllers, frame size.
@@ -26,7 +26,7 @@
     In outdoor applications GPS provides a reliable and fairly accurate way to localise with use of several other sensors.
     However, indoor applications are denied the benefits of GPS and often must use other sensors for the task of localisation.
     Utilizing a similar concept of triangulation used by GPS a local positioning system(LPS) can be used for indoor environments.
-    ~\textcite{pozyx2018pozyx} has developed a commercial system that utilizes Ultra-WideBand technology(UWB) with a bandwidth of $~\approx 500MHz$.
+    ~\citep{pozyx2018pozyx} has developed a commercial system that utilizes Ultra-WideBand technology(UWB) with a bandwidth of $~\approx 500MHz$.
 
     With indoor environments users have more control of the environment so a LPS can create a feasible solution for indoor localisation for UAV's/robots operating there.
     The core idea of this research would be to integrate a commercial LPS directly into an existing FCU to produce accurate position estimates that can be used for autonomy.
@@ -34,7 +34,7 @@
     This fused pose estimate would then be fed into the companion computer for off-board processing.
     \begin{figure}[h!]
         \centering
-        \includegraphics[scale=.65]{drone_setup}
+        \includegraphics[scale=.55]{drone_setup}
         \caption{The typical setup for an autonomous UAV.}
         \label{fig:ds}
     \end{figure}
