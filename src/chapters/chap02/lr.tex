@@ -39,7 +39,10 @@ The tag receives signals from multiple anchors and triangulates the tag.
 
 An approach using and comparing UWB and BLE is developed by ~\cite{findobjs} to do localisation in a museum.
 Both methods are combined with a dead reckoning system to improve accuracy.
-Six paintings are equipped with both a BLE and UWB tag
+Six paintings are equipped with both a BLE and UWB tag.
+The test setup first did a calibration where both sensors were placed at fixed points in the museum with a clear line of sight to each tag.
+From initial ranging performance, the UWB setup was shown to perform better with a distance variance of $\pm0.4m$ while the BLE setup had errors of over $10m$.
+It is noted by the authors that a ranging approach with BLE is challenging since it uses an RSSI method but can match the accuracy of the UWB setup when combined a dead reckoning system after some initial steps by the user.
 
 \begin{figure}[h!]
     \centering
@@ -49,3 +52,66 @@ Six paintings are equipped with both a BLE and UWB tag
 \end{figure}
 
 \section{Pozyx - Behind the Scenes}\label{sec:pozyx---behind-the-scenes}
+For this research project a commercially available, active UWB sensor system is proposed to aid in localisation of an indoor UAV system.
+
+\subsection*{Ultra-WideBand (UWB)}
+The core of the Pozyx system operates using an UWB approach.
+UWB is a short range, low energy, high bandwidth communication radio technology.
+Radio waves travel at the speed of light ($c=299792458ms^{-1}$) so using a TOF approach the range between a tag and an anchor can be obtained simply by:
+\[
+    d = c*TOF
+\]
+
+Knowing the position of each anchor in a given reference frame, ~\citet{evaluwb} discuss a method to use raw range readings in order to determine the position of the tag.
+The positions can be described by the following system of equations:
+        \begin{equation}
+                \left[
+            \begin{array}{c}
+                (x - x_1)^2 + (y - y_1)^2 + (z - z_1)^2 = d_1^2\\
+                \vdots\\
+                (x - x_n)^2 + (y - y_n)^2 + (z - z_n)^2 = d_n^2
+            \end{array}
+                \right]
+        \end{equation}
+        Where $n$ represents an index of an anchor and $(x,y,z)$ represents the position of the tag.
+        This can be converted into matrix form of \textbf{A.x = B}:
+        \begin{equation}
+            \left[
+            \begin{array}{c}
+                1 - 2x_1 -2y_1 -2z_1\\
+                \vdots\\
+                1 - 2x_n -2y_n -2z_n
+            \end{array}
+            \right]
+        *
+            \left[
+                \begin{array}{c}
+                    x^2 + y^2 +z^2\\
+                    x\\
+                    y\\
+                    z\\
+                \end{array}
+            \right]
+            =
+        \left[
+            \begin{array}{c}
+                d_1^2 - x_1^2 - y_1^2 -z_1^2\\
+                \vdots\\
+                d_n^2 - x_n^2 - y_n^2 -z_n^2
+            \end{array}
+        \right]
+       \end{equation}
+
+        The position of the tag can be calculated as:
+        \[
+            \hat{x} = (A^{T}A)^{-1}A^{T}B
+        \]
+
+From the algorithms and work presented we can confirm that the Pozyx system can achieve an accuracy of $\pm10cm$ in standard environments with LOS.
+The work confirms that LOS of the anchors to tag is a major factor in accuracy and this will be taken into account when anchors are being placed in the research.
+Furthermore, the work mentioned in this section proposes an algorithm with raw range readings in order to do localisation, my research will focus on the integration of the Pozyx tag with a standard FCU, so the pose data coming directly from the tag can be used.
+The pose can be obtained via two modes: 1). A pure Two Way Ranging (TWR) Approach or 2.) A tracking appoach using a Kalman prediction filter in addtion to the TWR pose.
+
+\subsection*{Two Way Ranging}.
+
+\subsection*{Sensor Fusion}
