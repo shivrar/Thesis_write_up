@@ -1,5 +1,174 @@
 \chapter{Literature Review}\label{ch:literature-review}
 \section{Indoor Localisation Systems}\label{sec:indoor-localisation-sensors}
 \subsection*{Passive Systems}
+In summary, passive systems do not require the object being tracked to have some of electronics on them to do positioning.
+Some examples of passive systems are ~\citep{deak2012survey}:
+\begin{itemize}
+    \item Computer Vision and Imaging systems.
+    \item Tactile and contact sensors.
+    \item Attenuation of signals.
+    \item Differential air pressure.
+\end{itemize}
+A common example of computer vision based localisation is to use a setup consisting of multiple cameras in a space trying to detecting a single object.
+Using the intrinsic and extrinsic properties of each camera it is possible to determine the transform to the object in a given frame with relatively high accuracy.
+A prime example of this is the commercial VICON motion capture systems.
+~\cite{aerialrobotsiitk} shows a drone application in which the UAV is positioned via using a VICON motion capture system.
+Figure~\ref{fig:vs} shows the simplified setup, it should be noted that the UAV must be equipped with specialised marker that is used to identify it.
+Furthermore, the positions are fed to a companion computer connected to the autopilot system.
+The VICON setup provides highly accurate positions and is often used to gather ground truth positional data to compare to other positioning systems.
+The additional requirements of the VICON systems, however, do not make it feasible for indoor applications.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=.45]{vicon_setup}
+    \caption{VISON setup for position of a UAV. (\url{https://aerial-robotics-iitk.gitbook.io/wiki/estimation/setup-with-vicon})}
+    \label{fig:vs}
+\end{figure}
+
+\subsection*{Active Systems}
+In contrast to passive systems, active systems have the object being positioned equipped with electronics.
+Many indoor localisation techniques use this and some examples are ~\cite{deak2012survey}
+\begin{itemize}
+    \item Radio-frequency identification
+    \item UWB
+    \item Wireless Local Area Network
+    \item Bluetooth Low energy (BLE)
+\end{itemize}
+Many of these setups use an anchor and tag configuration.
+The tag receives signals from multiple anchors and triangulates the tag.
+
+An approach using and comparing UWB and BLE is developed by ~\cite{findobjs} to do localisation in a museum.
+Both methods are combined with a dead reckoning system to improve accuracy.
+Six paintings are equipped with both a BLE and UWB tag.
+The test setup first did a calibration where both sensors were placed at fixed points in the museum with a clear line of sight to each tag.
+From initial ranging performance, the UWB setup was shown to perform better with a distance variance of $\pm0.4m$ while the BLE setup had errors of over $10m$.
+It is noted by the authors that a ranging approach with BLE is challenging since it uses an RSSI method but can match the accuracy of the UWB setup when combined a dead reckoning system after some initial steps by the user.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=.45]{uwb_vs_ble}
+    \caption{Setup used to compare UWB and BLE performance in a museum.}
+    \label{fig:uwbvsble}
+\end{figure}
 
 \section{Pozyx - Behind the Scenes}\label{sec:pozyx---behind-the-scenes}
+For this research project a commercially available, active UWB sensor system is proposed to aid in localisation of an indoor UAV system.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=.7]{lr/uwb_block}
+    \caption{Simplified Block Diagram of the Pozyx tag.}
+%    \label{fig:twr}
+\end{figure}
+\subsection*{Ultra-WideBand (UWB)}
+The core of the Pozyx system operates using an UWB approach.
+UWB is a short range, low energy, high bandwidth communication radio technology.
+Radio waves travel at the speed of light ($c=299792458ms^{-1}$) so using a TOF approach the range between a tag and an anchor can be obtained simply by:
+\[
+    d = c*TOF
+\]
+
+Knowing the position of each anchor in a given reference frame, ~\citet{evaluwb} discuss a method to use raw range readings in order to determine the position of the tag.
+The positions can be described by the following system of equations:
+        \begin{equation}
+                \left[
+            \begin{array}{c}
+                (x - x_1)^2 + (y - y_1)^2 + (z - z_1)^2 = d_1^2\\
+                \vdots\\
+                (x - x_n)^2 + (y - y_n)^2 + (z - z_n)^2 = d_n^2
+            \end{array}
+                \right]
+        \end{equation}
+        Where $n$ represents an index of an anchor and $(x,y,z)$ represents the position of the tag.
+        This can be converted into matrix form of \textbf{A.x = B}:
+        \begin{equation}
+            \left[
+            \begin{array}{c}
+                1 - 2x_1 -2y_1 -2z_1\\
+                \vdots\\
+                1 - 2x_n -2y_n -2z_n
+            \end{array}
+            \right]
+        *
+            \left[
+                \begin{array}{c}
+                    x^2 + y^2 +z^2\\
+                    x\\
+                    y\\
+                    z\\
+                \end{array}
+            \right]
+            =
+        \left[
+            \begin{array}{c}
+                d_1^2 - x_1^2 - y_1^2 -z_1^2\\
+                \vdots\\
+                d_n^2 - x_n^2 - y_n^2 -z_n^2
+            \end{array}
+        \right]
+       \end{equation}
+
+        The position of the tag can be calculated as:
+        \[
+            \hat{x} = (A^{T}A)^{-1}A^{T}B
+        \]
+
+From the algorithms and work presented we can confirm that the Pozyx system can achieve an accuracy of $\pm10cm$ in standard environments with LOS.
+The work confirms that LOS of the anchors to tag is a major factor in accuracy and this will be taken into account when anchors are being placed in the research.
+Furthermore, the work mentioned in this section proposes an algorithm with raw range readings in order to do localisation, my research will focus on the integration of the Pozyx tag with a standard FCU, so the pose data coming directly from the tag can be used.
+The pose can be obtained via two modes: 1). A pure Two Way Ranging (TWR) Approach or 2.) A tracking approach using a Kalman prediction filter in addition to the TWR pose.
+
+\subsection*{Two Way Ranging (TWR)}
+TWR is a ranging method that utilises TOF and delays during transmission of a packet in order to determine the range between a tag and anchor.
+Figure~\ref{fig:twr} provides a simple illustration of how this works.
+The distance for an individual tag and an anchor can be obtained by:
+\[
+    d=c.\frac{(TT2-TT1)-(TA2-TA2)}{2}
+\]
+This is repeated for each anchor and then the position of the tag can be determined via trilateration.
+Geometrically, the position of the tag can be described as the point intersection of all the circles with distance,d , from the tag.
+This can be seen in Figure~\ref{fig:trilat}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=.7]{lr/TWR}
+    \caption{Packet transfer in TWR.}
+    \label{fig:twr}
+\end{figure}
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=.7]{lr/trilat}
+    \caption{4 Anchor and 1 Tag trilateration in 2D.}
+    \label{fig:trilat}
+\end{figure}
+
+
+\subsection*{Sensor Fusion}
+From the previous section we have described the basic principle of operation of the Pozyx system.
+With a tag we are able to at least determine a rough estimate of the position of a tag in a given reference frame.
+Additionally, the tag has an Inertial Measurement Unit (IMU), consisting of an Accelerometer, Gyroscope and Magnetometer, and an Altimeter.
+These are used in one of the operational modes of the Pozyx system in order to improve accuracy.
+The idea of sensor fusion is to combine multiple sources of data in order to get a fairly accurate estimate of the pose of the system,
+The measurements from the tag can be combined with the sensors onward a FCU in order to achieve this.
+The de-facto sensor fusion technique is called the Extended Kalman Filter (EKF).
+~\citet{simpleekf} present a useful description and example of how the EKF works.
+Algorithmically, the EKF is a recursive process using predictions based on the dynamics of the vehicles and updating the estimate based on these predictions and measurements from various sources.
+The major requirement for the EKF is that the process model and the measurement model are differentiable.
+The steps for the EKF are as follows:
+\begin{enumerate}
+    \item Provide and initial estimate for the state, $\hat{x}^+_k$, and the prediction error, $P^+_k$.
+    \item Compute the Kalman gain, $K_k = P^+_{k}H_k^T(H_k P^+_{k}H_k^T + R)^{-1}$
+    \item Update the estimate with measurement $z_k$, $\hat{x}_k=\hat{x}^+_k + K_k(z_k - h(\hat{x}^+_k))$
+    \item Update the prediction error, $P_k = (I - K_k H_k)P^+_{k}$
+    \item Project the state ahead, $\hat{x}^+_{k+1} = f(\hat{x}_k, u_k, w)$
+    \item Project the Prediction error ahead, $P^+_{k+1} = A_k P_k A_k^T + Q_k$
+    \item Repeat from step 2.
+\end{enumerate}
+Where K is the Kalman gain, R is the Measurement Noise Covariance Matrix, Q is the Process Noise Covariance matrix.
+~\citet{conceiccao2017robot} present a method for using the Pozyx in an outdoor environment, a similar methodology would be adapted for this work with focus on indoor limitations.
+
+\subsection*{Pozyx - Arduino Implementation}
+Before continuing it should be noted that ~\citet{ardupilotarduino} has addressed the idea of combining the Pozyx system with a Flight controller using the Ardupliot firmware.
+The implementation uses the Pozyx tag's compatibility with the Arduino UNO R3 or R2 pin layout.
+The Pozyx Arduino library is used to gather the relevant information from the Pozyx tag and then send it via serial to the FCU.
+This research aims to bridge this gap in the hardware and remove the need for the Arduino UNO for the indoor navigation.
+The major driving force of this is to minimize the amount of extra hardware that should be mounted on and indoor UAV.
