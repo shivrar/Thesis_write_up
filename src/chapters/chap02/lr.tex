@@ -1,6 +1,7 @@
 \chapter{Literature Review}\label{ch:literature-review}
 \section{Indoor Localisation Systems}\label{sec:indoor-localisation-sensors}
 \subsection*{Passive Systems}
+%TODO: PUT IN MORE PAPERS CITING UWB AND WORK WITH UWB/POZYX -> look at the pozyx site
 In summary, passive systems do not require the object being tracked to have some of electronics on them to do positioning.
 Some examples of passive systems are ~\citep{deak2012survey}:
 \begin{itemize}
@@ -116,8 +117,8 @@ From the algorithms and work presented we can confirm that the Pozyx system can 
 The work confirms that LOS of the anchors to tag is a major factor in accuracy and this will be taken into account when anchors are being placed in the research.
 Furthermore, the work mentioned in this section proposes an algorithm with raw range readings in order to do localisation, my research will focus on the integration of the Pozyx tag with a standard FCU, so the pose data coming directly from the tag can be used.
 The pose can be obtained via two modes: 1). A pure Two Way Ranging (TWR) Approach or 2.) A tracking approach using a Kalman prediction filter in addition to the TWR pose.
-
-\subsection*{Two Way Ranging (TWR)}
+%TODO: MARK HERE WITH MORE PAPERS EXPANDING UWB
+\subsection*{Two Way Ranging (TWR)} % TODO: Look at pulling this put into an appendix?
 TWR is a ranging method that utilises TOF and delays during transmission of a packet in order to determine the range between a tag and anchor.
 Figure~\ref{fig:twr} provides a simple illustration of how this works.
 The distance for an individual tag and an anchor can be obtained by:
@@ -165,6 +166,7 @@ The steps for the EKF are as follows:
 \end{enumerate}
 Where K is the Kalman gain, R is the Measurement Noise Covariance Matrix, Q is the Process Noise Covariance matrix.
 ~\citet{conceiccao2017robot} present a method for using the Pozyx in an outdoor environment, a similar methodology would be adapted for this work with focus on indoor limitations.
+%TODO:   ^ This paper can be expanded on a little more.
 
 \subsection*{Pozyx - Arduino Implementation}
 Before continuing it should be noted that ~\citet{ardupilotarduino} has addressed the idea of combining the Pozyx system with a Flight controller using the Ardupliot firmware.
@@ -172,3 +174,6 @@ The implementation uses the Pozyx tag's compatibility with the Arduino UNO R3 or
 The Pozyx Arduino library is used to gather the relevant information from the Pozyx tag and then send it via serial to the FCU.
 This research aims to bridge this gap in the hardware and remove the need for the Arduino UNO for the indoor navigation.
 The major driving force of this is to minimize the amount of extra hardware that should be mounted on and indoor UAV.
+% TODO: Additional closing paragraph to help solidfy my options for the methodlogy and guide the reader. -> Why am i doing the technical work I am doing.
+% TODO: Major gaps -> Major gap in feasible and usable results for indoor loclisation of drones in a real scenario -> Kitchen for eg.
+% TODO: Find papers that show these lacking stuff.
