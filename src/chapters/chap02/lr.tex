@@ -48,9 +48,37 @@ It is noted by the authors that a ranging approach with BLE is challenging since
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=.45]{uwb_vs_ble}
-    \caption{Setup used to compare UWB and BLE performance in a museum.}
+    \caption{Setup used to compare UWB and BLE performance in a museum. \cite{findobjs} Page: 3}
     \label{fig:uwbvsble}
 \end{figure}
+
+\section{Sensor Fusion}
+From the previous section we have described the basic principle of operation of the Pozyx system.
+With a tag we are able to at least determine a rough estimate of the position of a tag in a given reference frame.
+Additionally, the tag has an Inertial Measurement Unit (IMU), consisting of an Accelerometer, Gyroscope and Magnetometer, and an Altimeter.
+These are used in one of the operational modes of the Pozyx system in order to improve accuracy.
+The idea of sensor fusion is to combine multiple sources of data in order to get a fairly accurate estimate of the pose of the system,
+The measurements from the tag can be combined with the sensors onward a FCU in order to achieve this.
+The de-facto sensor fusion technique is called the Extended Kalman Filter (EKF).
+~\citet{simpleekf} present a useful description and example of how the EKF works.
+Algorithmically, the EKF is a recursive process using predictions based on the dynamics of the vehicles and updating the estimate based on these predictions and measurements from various sources.
+The major requirement for the EKF is that the process model and the measurement model are differentiable.
+The steps for the EKF are as follows:
+\begin{enumerate}
+    \item Provide and initial estimate for the state, $\hat{x}^+_k$, and the prediction error, $P^+_k$.
+    \item Compute the Kalman gain, $K_k = P^+_{k}H_k^T(H_k P^+_{k}H_k^T + R)^{-1}$
+    \item Update the estimate with measurement $z_k$, $\hat{x}_k=\hat{x}^+_k + K_k(z_k - h(\hat{x}^+_k))$
+    \item Update the prediction error, $P_k = (I - K_k H_k)P^+_{k}$
+    \item Project the state ahead, $\hat{x}^+_{k+1} = f(\hat{x}_k, u_k, w)$
+    \item Project the Prediction error ahead, $P^+_{k+1} = A_k P_k A_k^T + Q_k$
+    \item Repeat from step 2.
+\end{enumerate}
+Where K is the Kalman gain, R is the Measurement Noise Covariance Matrix, Q is the Process Noise Covariance matrix.
+%TODO: Look at add in another sensor fusion for indoor navigation here-> Look at the online wiki i did lol
+~\citet{tsai1998localization} document work for localising a mobile robot using ultrasonic measurements.
+Although, the system was a wheeled mobile robot instead of a UAV, the calculations using the TOF measurements and dead reckoning data as well as the use of an EKF to improve the pose estimates are similar to what is trying to be achieved in this current project.
+A notable contribution of the work is the use of a voting scheme to obtain the best 'observation' for the the robot's orientation before being fed into the EKF algorithm.
+
 
 \section{Pozyx - Behind the Scenes}\label{sec:pozyx---behind-the-scenes}
 For this research project a commercially available, active UWB sensor system is proposed to aid in localisation of an indoor UAV system.
@@ -135,14 +163,14 @@ Due to the accuracy of the system ($\pm10cm$) leads to large variance in instant
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=.5]{lr/bork_pozyx}
-    \caption{The experimental setups for both a dog and a student.}
+    \caption{The experimental setups for both a dog and a student. \cite{destefano2019using} Page: 1.}
     \label{fig:bpozyx}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=.5]{lr/student_walking_results}
-    \caption{Data collected from a student walking in a circle.}
+    \caption{Data collected from a student walking in a circle. \cite{destefano2019using} Page: 2.}
     \label{fig:stupozyx}
 \end{figure}
 

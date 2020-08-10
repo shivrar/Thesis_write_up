@@ -19,7 +19,7 @@ With a tag position of (1480,2330,980)mm, the following statistics were calculat
 In addition to the average error and standard deviation,  kurtosis and skew metrics were added to show the number of outliers and symmetry of the recorded data.
 The error metrics are important to give an idea of how noisy the overall data is while kurtosis and skewness gives an indication if the noise follows a uniform distribution which would be beneficial ideal for state estimators.
 From table ~\ref{tb:config_stats} we can see that configuration 12 gives acceptable error metrics and reasonable skew and kurtosis making it the best out of the configurations tested.
-To further support this Figure ~\ref{fig:config} shows several results obtained with several configurations and it can be seen that configuration 12 produced the best results.
+To further support this Figure ~\ref{fig:config} shows several results obtained with several configurations and it can be seen that configuration 12 produced the best results with minimal noise and measurment outliers as well as it was centered around the ground truth position of the tag.
 
 \begin{figure}[h!]
     \centering
@@ -28,17 +28,74 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
     \label{fig:layout}
 \end{figure}
 \newpage
+
+\begin{longtable}[h!]{| c | c |}
+    \hline
+    Config & Anchor positions (mm)$\left(\begin{array}{c}
+   Anchor1(x,y,z),\\Anchor2(x,y,z),\\Anchor3(x,y,z),\\ Anchor4(x,y,z)
+   \end{array}\right)$ \\
+    \hline
+    1 & $\left(\begin{array}{c}
+   (0,0,1115),\\(3680, -405, 1550),\\(3655, 4080, 1906),\\(270, 4465, 2090)
+   \end{array}\right)$\\
+    \hline
+    2 & $\left(\begin{array}{c}
+   (0,665,1115),\\(2995, -405, 1889),\\(3655, 4080, 1906),\\(270, 4465, 2090)
+   \end{array}\right)$\\
+    \hline
+    3 & $\left(\begin{array}{c}
+   (0,665,1115),\\(2995, -405, 1889),\\(3655, 4080, 1906),\\(1526, 4559, 837)
+   \end{array}\right)$\\
+    \hline
+    4 & $\left(\begin{array}{c}
+   (0,665,1115),\\(2995, -405, 1889),\\(3655, 4080, 1906),\\(1070, 5170, 491)
+   \end{array}\right)$\\
+    \hline
+    5 & $\left(\begin{array}{c}
+   (0,665,1115),\\(2995, -405, 1889),\\(3960, 3368, 2304),\\(1070, 5170, 491)
+   \end{array}\right)$\\
+    \hline
+    6 & $\left(\begin{array}{c}
+   (0,665,1115),\\(2737, -410, 1913),\\(3655, 3598, 1668),\\(1187, 4760, 590)
+   \end{array}\right)$\\
+    \hline
+    7 & $\left(\begin{array}{c}
+   (0,665,1115),\\(2737, -410, 1913),\\(3655, 4529, 1777),\\(1187, 4760, 590)
+   \end{array}\right)$\\
+    \hline
+    8 & $\left(\begin{array}{c}
+   (0,645,1214),\\(2737, -410, 1913),\\(3651, 4120, 1853),\\(1066, 4760, 491)
+   \end{array}\right)$\\
+    \hline
+    9 & $\left(\begin{array}{c}
+   (0,645,1214),\\(2737, -410, 1913),\\(3970, 3063, 2320),\\(1066, 4760, 491)
+   \end{array}\right)$\\
+    \hline
+    10 & $\left(\begin{array}{c}
+   (0,645,1214),\\(2737, -410, 1913),\\(3651, 3550, 1810),\\(1066, 4760, 491)
+   \end{array}\right)$\\
+   \hline
+    11 & $\left(\begin{array}{c}
+   (0,645,1214),\\(2737, -410, 1913),\\(3651, 3550, 1810),\\(1591, 4450, 1775)
+   \end{array}\right)$\\
+    \hline
+    \rowcolor{LightGreen}12 & $\left(\begin{array}{c}
+   (0,645,1214),\\(2737, -410, 1913),\\(3651, 4120, 1853),\\(1591, 4450, 1775)
+   \end{array}\right)$\\
+    \hline
+    \caption{Anchor locations for each Configuration}
+    \label{tb:ach_loc}
+\end{longtable}
+
 %\begin{table}[h!]
-   \begin{longtable}[h!]{| c | c | c | c | c | c |}
+   \begin{longtable}[h!]{| c | c | c | c | c |}
        \hline
-       Config \#& Anchor positions (mm)
+       Config
        & Avg. Error & Std. Deviation$\left(\begin{array}{c}
        x,\\y,\\z
        \end{array}\right)$ & Kurtosis & Skewness\\
        \hline
-       1 & $\left(\begin{array}{c}
-       (0,0,1115),\\(3680, -405, 1550),\\(3655, 4080, 1906),\\(270, 4465, 2090)
-       \end{array}\right)$& 342.5906 & $\left(\begin{array}{c}
+       1 & 342.5906 & $\left(\begin{array}{c}
        183.1707,\\205.3426,\\972.6239
        \end{array}\right)$&$\left( \begin{array}{c}
        2.349,\\ 1.5967,\\ 1.415
@@ -46,9 +103,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        -0.4083,\\ -0.3522,\\ 0.4551
        \end{array} \right)$\\
        \hline
-              2 & $\left(\begin{array}{c}
-       (0,665,1115),\\(2995, -405, 1889),\\(3655, 4080, 1906),\\(270, 4465, 2090)
-       \end{array}\right)$& 173.5938 & $\left(\begin{array}{c}
+              2 &  173.5938 & $\left(\begin{array}{c}
        43.2345,\\45.6897,\\133.8616\\
        \end{array}\right)$&$\left( \begin{array}{c}
        21.8923,\\ 10.1765,\\ 119.1344
@@ -56,9 +111,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        -2.8672,\\ -0.3453,\\ 8.9025
        \end{array} \right)$\\
        \hline
-              3 & $\left(\begin{array}{c}
-       (0,665,1115),\\(2995, -405, 1889),\\(3655, 4080, 1906),\\(1526, 4559, 837)
-       \end{array}\right)$& 203.8502 & $\left(\begin{array}{c}
+              3 &  203.8502 & $\left(\begin{array}{c}
        128.4693,\\118.3216,\\209.1637
        \end{array}\right)$&$\left( \begin{array}{c}
        14.2955,\\ 11.2045,\\ 2.9124
@@ -66,9 +119,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        -2.579,\\  -0.3920,\\ 0.4055
        \end{array} \right)$\\
        \hline
-              4 & $\left(\begin{array}{c}
-       (0,665,1115),\\(2995, -405, 1889),\\(3655, 4080, 1906),\\(1070, 5170, 491)
-       \end{array}\right)$& 85.8562 & $\left(\begin{array}{c}
+              4 &  85.8562 & $\left(\begin{array}{c}
        40.2197,\\40.6081,\\66.2120
        \end{array}\right)$&$\left( \begin{array}{c}
        6.7558,\\ 7.5180,\\ 3.4722
@@ -76,9 +127,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        -0.4260,\\ -0.5344,\\ -0.1242
        \end{array} \right)$\\
        \hline
-              5 & $\left(\begin{array}{c}
-       (0,665,1115),\\(2995, -405, 1889),\\(3960, 3368, 2304),\\(1070, 5170, 491)
-       \end{array}\right)$& 64.8616 & $\left(\begin{array}{c}
+              5 &  64.8616 & $\left(\begin{array}{c}
        65.3883,\\53.8458,\\78.5751
        \end{array}\right)$&$\left( \begin{array}{c}
        13.3707,\\ 13.2178,\\ 11.0111
@@ -86,9 +135,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        -0.6016,\\ 0.3745,\\ 0.0461
        \end{array} \right)$\\
        \hline
-              6 & $\left(\begin{array}{c}
-       (0,665,1115),\\(2737, -410, 1913),\\(3655, 3598, 1668),\\(1187, 4760, 590)
-       \end{array}\right)$& 189.933 & $\left(\begin{array}{c}
+              6 &  189.933 & $\left(\begin{array}{c}
        40.8435,\\32.6482,\\58.5618
        \end{array}\right)$&$\left( \begin{array}{c}
        11.8957,\\ 11.8924,\\ 11.092
@@ -96,9 +143,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        0.7516,\\ -0.0100,\\ -0.1322
        \end{array} \right)$\\
        \hline
-              7 & $\left(\begin{array}{c}
-       (0,665,1115),\\(2737, -410, 1913),\\(3655, 4529, 1777),\\(1187, 4760, 590)
-       \end{array}\right)$& 100.6929 & $\left(\begin{array}{c}
+              7 &  100.6929 & $\left(\begin{array}{c}
        75.8269,\\72.0940,\\41.9398
        \end{array}\right)$&$\left( \begin{array}{c}
        26.0285,\\ 17.4295,\\ 7.2328
@@ -106,9 +151,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        -3.1681,\\ -0.8384,\\ -0.7151
        \end{array} \right)$\\
        \hline
-              8 & $\left(\begin{array}{c}
-       (0,645,1214),\\(2737, -410, 1913),\\(3651, 4120, 1853),\\(1066, 4760, 491)
-       \end{array}\right)$& 138.1276 & $\left(\begin{array}{c}
+              8 &  138.1276 & $\left(\begin{array}{c}
        26.2243,\\21.8750,\\70.6189
        \end{array}\right)$&$\left( \begin{array}{c}
        4.6048,\\ 52.2374,\\ 50.9467
@@ -116,9 +159,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        -0.4858,\\ 5.0752,\\ 5.1757
        \end{array} \right)$\\
        \hline
-              9 & $\left(\begin{array}{c}
-       (0,645,1214),\\(2737, -410, 1913),\\(3970, 3063, 2320),\\(1066, 4760, 491)
-       \end{array}\right)$& 258.296 & $\left(\begin{array}{c}
+              9 &  258.296 & $\left(\begin{array}{c}
        165.7105,\\95.081,\\475.0623
        \end{array}\right)$&$\left( \begin{array}{c}
        2.2833,\\ 1.7939,\\ 2.3406
@@ -126,9 +167,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        -0.6982,\\ 0.2746,\\ 0.7517
        \end{array} \right)$\\
        \hline
-              10 & $\left(\begin{array}{c}
-       (0,645,1214),\\(2737, -410, 1913),\\(3651, 3550, 1810),\\(1066, 4760, 491)
-       \end{array}\right)$& 235.348 & $\left(\begin{array}{c}
+              10 &  235.348 & $\left(\begin{array}{c}
        116.1306,\\89.9868,\\420.8322
        \end{array}\right)$&$\left( \begin{array}{c}
        3.6670,\\ 4.7058,\\ 3.8066
@@ -136,9 +175,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        1.5079,\\ -1.7613,\\ -1.5615
        \end{array} \right)$\\
        \hline
-              11 & $\left(\begin{array}{c}
-       (0,645,1214),\\(2737, -410, 1913),\\(3651, 3550, 1810),\\(1591, 4450, 1775)
-       \end{array}\right)$& 223.4468 & $\left(\begin{array}{c}
+              11 &  223.4468 & $\left(\begin{array}{c}
        120.9674,\\79.8602,\\409.8192
        \end{array}\right)$&$\left( \begin{array}{c}
        3.389,\\ 4.6663,\\ 3.1988
@@ -146,9 +183,7 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
        1.1099,\\ -1.5397,\\ -1.2038
        \end{array} \right)$\\
        \hline
-              12 & $\left(\begin{array}{c}
-       (0,645,1214),\\(2737, -410, 1913),\\(3651, 4120, 1853),\\(1591, 4450, 1775)
-       \end{array}\right)$& 111.8493 & $\left(\begin{array}{c}
+              \rowcolor{LightGreen}12 &  111.8493 & $\left(\begin{array}{c}
        27.568,\\17.7124,\\64.4278
        \end{array}\right)$&$\left( \begin{array}{c}
        4.8522,\\ 7.4335,\\ 6.2489
@@ -170,18 +205,119 @@ To further support this Figure ~\ref{fig:config} shows several results obtained 
         ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
           %(or a blank line to force the subfigure onto a new line)
         \begin{subfigure}[b]{0.49\textwidth}
-            \includegraphics[width=\textwidth]{results/config6}
-            \caption{Plot of Config 6}
+            \includegraphics[width=\textwidth]{results/config2}
+            \caption{Plot of Config 2}
         \end{subfigure}
 
-        \begin{subfigure}[b]{\textwidth}
-            \includegraphics[width=\textwidth]{results/config11}
-            \caption{Plot of Config 12}
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config3}
+            \caption{Plot of Config 3}
+        \end{subfigure}
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config4}
+            \caption{Plot of Config 4}
+        \end{subfigure}
+
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config5}
+            \caption{Plot of Config 5}
+        \end{subfigure}
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config6}
+            \caption{Plot of Config 6}
         \end{subfigure}
         \caption{Sample plots of several anchor configurations.}
         \label{fig:config}
     \end{figure}
 
+    \begin{figure}\ContinuedFloat
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config7}
+            \caption{Plot of Config 7}
+        \end{subfigure}
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config8}
+            \caption{Plot of Config 8}
+        \end{subfigure}
+
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config9}
+            \caption{Plot of Config 9}
+        \end{subfigure}
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config10}
+            \caption{Plot of Config 10}
+        \end{subfigure}
+
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config11}
+            \caption{Plot of Config 11}
+        \end{subfigure}
+        ~ %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc.
+          %(or a blank line to force the subfigure onto a new line)
+        \begin{subfigure}[b]{0.49\textwidth}
+            \includegraphics[width=\textwidth]{results/config12}
+            \caption{Plot of Config 12}
+        \end{subfigure}
+        \caption[]{Sample plots of several anchor configurations. (cont'd)}
+    \end{figure}
+
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}[b]{0.4\textwidth}
+            \includegraphics[width=\textwidth]{mtd/anchor1}
+            \caption{Anchor 1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\textwidth}
+            \includegraphics[width=\textwidth]{mtd/anchor2}
+            \caption{Anchor 2}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.4\textwidth}
+            \includegraphics[width=\textwidth]{mtd/anchor3}
+            \caption{Anchor 3}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.4\textwidth}
+            \includegraphics[width=\textwidth]{mtd/anchor4}
+            \caption{Anchor 4}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.7\textwidth}
+            \includegraphics[width=\textwidth]{mtd/kitchen_full}
+            \caption{Actual Kitchen Layout}
+    \end{subfigure}
+    \caption{Physical layout of the kitchen/Test Area}
+    \label{fig:kitchen}
+\end{figure}
+\medskip
+Figure: ~\ref{fig:kitchen} shows the physcial locations of the pozyx anchors with respect to obstacles in the environment.
+Some things to note are:
+\begin{itemize}
+    \item The walls are made from concrete and dry wall and there are no underlying materials that affected the performance of the anchors.
+    \item The fridges have dimensions of $(600*600*1750)$mm.
+    \item The corner of the island is located at $(1525,2106,918)$ and it has a dimension of $(2450*900*918)$mm.
+    \item Above the island is considered traversible while beneath it will be considered to be impossible to traverse to simply future experiments.
+\end{itemize}
 %TODO: Insert the pics I took of the anchors here.
-Intro to the basic concept, highlight Pietra's paper and how I am using that to phrase and determine the best location
-Show pics, diagrams and initial table of results?
+%Intro to the basic concept, highlight Pietra's paper and how I am using that to phrase and determine the best location
+%Show pics, diagrams and initial table of results?
+
+\subsection*{Summary}
+The initial results allowed for a suitable configuration to be obtained but results were recorded in an ideal scenario.
+Although these provide a good baseline for what to expect under good operational conditions, the parameters and limitations of the system would need to be tested before any form of optimisation
+and improvement to position estimates can be done.
+In the next Section: ~\ref{sec:op-params} we investigate this.
+
+\newpage
+\input{chapters/chap03/mtd_sub/op_params}
+\newpage
+\input{chapters/chap03/mtd_sub/tech_design.tex}
