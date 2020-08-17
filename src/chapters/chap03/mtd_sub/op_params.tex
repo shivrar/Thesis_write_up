@@ -6,7 +6,7 @@ From work done by ~\citet{evaluwb} we can see that the major factor affecting th
 Furthermore the work discusses the use of using an optimal triplet of anchors in order to improve accuracy this is an indication that a loss of a single anchor in the optimal configuration determined in the previous section should still yield reasonable results.
 To confirm there operational parameters the following experiments were carried out.
 
-\subsection*{Loss of Anchor}
+\subsection{Loss of Anchor}\label{subsec:loss-of-anchor}
 In theory a minimum of three anchors are all that is needed for determining the two dimensional position, $(x,y)$, of the tag via trilateration.
 Losing a single anchor would therefore allow for the $(x,y)$ position to be determined with a fair amount of accuracy with discrepancies showing up in the z position readings.
 To test this data was recorded starting with all four anchors and then systematically one achor was turned of in each sample.
@@ -36,7 +36,7 @@ It can be see that the $(x,y)$ position remains relatively unchanged in all with
     \label{fig:Loss_anchors}
 \end{figure}
 \newpage
-\subsection*{No Line of Sight}
+\subsection{No Line of Sight}\label{subsec:no-line-of-sight}
 The positioning calculations are based on a Two way ranging and Time of flight Calculation scheme see Appendix:~\ref{app:app01}.
 The major crux of the calculation is that the wave is always moving at the speed of light this means that introducing an obstacle between the any anchor and the tag that attenuates the signal would introduce discrepancies in the results obtained.
 Figure:~\ref{fig:nlos} shows the setup used to test this scenario.
