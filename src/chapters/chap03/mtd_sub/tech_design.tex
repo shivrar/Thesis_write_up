@@ -111,9 +111,130 @@ The design of this library proves that the sensor data can be integrated directl
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=\textwidth]{mtd/wip}
+    \includegraphics[width=0.85\textwidth]{mtd/wip}
     \caption{System being unit tested in the environment.}
 \end{figure}
 \newpage
-\subsection{Sensor Fusion: EKF on Ardupilot}\label{subsec:sensor-fusion}
-\lipsum[2-6]
+\subsection{Sensor Fusion: Pozyx Readings and EKF on Ardupilot}\label{subsec:sensor-fusion}
+As mentioned in Chapter:~\ref{ch:literature-review} sensor fusion forms the basis of estimating states of the system when their are multiple measurements of that state present.
+The de facto one used in navigation and localisation happens to be the Extended Kalman Filter (EKF).
+The Ardupilot codebase implements an EKF to estimate 24 states.
+The state being affected by the implementation will be the position estimates given in North, East, Down (NED) frame.
+NED reference frame is similar to the standard left handed notation used in several standard robotic systems with the major difference being the Down axis which is opposite in direction to the standard Z axis in robotic systems.
+The developers of the Pozyx system, ~\cite{pozyx2018pozyx}, designed the firmware of the tag in such a way that obtaining information or triggering any functions are done with sequential reading and writing operations to various registers on the tag.
+~\citet{devregs} lists all the functionality of the tag via the registers.
+From the registers it is possible to obtain boht the distances of the tag to each anchor as well as the position of the tag within the workspace.
+It was confirmed by developers that the positioning algorithms operate in two modes.
+\begin{enumerate}
+    \item A pure triangulation using the TOF readings from each anchor.
+    \item A tracking mode which combines IMU and TOF readings in a Kalman Filter to improve accuracy.
+\end{enumerate}
+For the purpose of this research the position readings were used since these cna be directly integrated into the Ardupilot codebase immediately.
+Furthermore, the tag was configured to be used in the tracking mode to improve the accuracy of the measurements.
+Lastly, from section:~\ref{sec:op-params} and notes from the Pozyx team and ~\citet{evaluwb} 4 anchors may not provide sufficient data for a full 3D position so the system was hardcoded to operate in a 2.5 dimension which means the height (z reading) was fixed on a surface so the tag calculated and provided (x,y, z reading) positioning when requested.
+The final step was to have this implemented on the Pixhawk with the Ardupilot firmware within the Beacon susbsystem of the code.
+This meant that the following steps had to be implemented.
+\begin{itemize}
+    \item Initialise the I2C bus on the Pixhawk and configure the tag.
+    \item On an 'update()' function call, set the vehicle position based on the tag reading and set the distance between each anchor and the tag.
+    \item A 'healthy()' function call, should return true if the Pixhawk was able to retrieve viable data from the tag.
+\end{itemize}
+
+Appendix:~\ref{app:app02} shows the core code designed to do this but the overall integration with the Ardupilot codebase can be seen by the pseudo code below.
+\begin{algorithm}
+    Main vehicle code
+        loop()
+        {
+            beacon_reading = beacon->get_vehicle_position()
+            EKF_update()
+            {
+                ...
+                fusebcnreading()
+                ...
+            }
+            .
+            .
+            .
+    Background Scheduler
+        loop()
+        {
+            ...
+            beacon->update()
+            ...
+        }
+
+        }
+\end{algorithm}
+
+Appendix: ~\ref{subsec:ap_pozyx_test.cpp} also shows a unit test to ensure the standard inteface and data encpsulation is exactly what is needed and provided by the other beacon measurment systems in the Ardupilot codebase.
+Although it was verified that the code was integrated and the measurements were being captured by the main vehicle code and EKF measurement function operating indoors prevented the internal compass/magnetometer from working properly.
+When the compass is disabled the 'yawAlignComplete' check, which is required by the EKF to see if beacon measurements are viable to use, is set whilst the UAV is in flight.
+Due to only having access to a FCU at the time, the onboard EKF estimates could not be obtained and sent via MAVLink without a refactor to the core code which is outside the scope of this research project.
+However, to rectify this a simple two state EKF was implemented in python utilising the recorded data to determine if viable position estimates could be generated that can be used in a UAV or robotic system.
+
+\subsection*{EKF design}
+As discussed in Section:~\ref{sec:sensor_fusion} and the preceding section an EKF was implemented to improve the position estimates from the pozyx sensor.
+The major driving force for using an EKF over other filters and estimators was to mimic the Ardupilot setup as closely as possible as to give hints for future work and testing of the UAV whilst in flight.
+Once again the tag will be operated in 2.5 dimensions in tracking mode to determine if the system can withstand NLOS when dynamic obstacles are introduced into the environment.
+Similar to the setup in Section:~\ref{sec:op-params} the tag was allowed to operate and record in various scenarios while static and moving.
+It should be noted that since we are operating in 2.5 dimensions only two state filter will be implemented.
+Furthermore, since the tag outputs direct measurements of the state the matrices are simplified and east to implement.
+
+System equations:
+\begin{equation*}
+    \begin{split}
+        f(\hat{x},\hat{u},t) = \left[ \begin{array}{cc}
+                              x & 0\\
+                              0 & y
+        \end{array} \right]\\
+        z(\hat{x}) = \left[ \begin{array}{cc}
+                              x & 0\\
+                              0 & y
+        \end{array} \right]\\
+    \end{split}
+\end{equation*}
+
+
+Linearised state transition model:
+\[
+    F =
+    \left[ \begin{array}{cc}
+    1 & 0\\
+    0 & 1
+    \end{array}
+    \right]
+\]
+
+Linearised observation model:
+\[
+    H =
+    \left[ \begin{array}{cc}
+    1 & 0\\
+    0 & 1
+    \end{array}
+    \right]
+\]
+
+An added benefit of using the pozyx sensor is that it is possible to obtain the measurement uncertainty for each measurement which allows it to be incorporated in the calculation of the Kalman Gain at each time step.
+
+\[
+    R =
+%
+        \left[
+            \begin{array}{cc}
+                Var(x)(t) & Cov(x,y)(t)\\
+                Cov(x,y)(t) & Var(y)(t)
+            \end{array}
+        \right]
+\]
+
+Another adjustment from the standard EKF is that an outliers measurements were not used.
+Outliers arose due to sudden jerks in motion causing the measurements coming out of the tag to be erratic and vary wildly in certain time steps.
+
+\section{Summary}
+This section thoroughly discussed the methodology and design process used to achieve the objectives and scope of this research.
+Although the Ardupilot based EKF onboard the Pixhawk FCU could not be used to get position estimates due to several
+limitations and scoping of this project, the feasibility of an EKF in general was explored as a method of improving the
+overall position estimates of the system which can then be extended for use in the future within an Ardupilot based FCU without the current limitations.
+In the next chapter the results of the EKF will be presented under various scenarios to show the effectiveness and limitations of the Pozyx sensor in an household environment.
+%\lipsum[2-6]
