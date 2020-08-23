@@ -129,7 +129,7 @@ It was confirmed by developers that the positioning algorithms operate in two mo
     \item A pure triangulation using the TOF readings from each anchor.
     \item A tracking mode which combines IMU and TOF readings in a Kalman Filter to improve accuracy.
 \end{enumerate}
-For the purpose of this research the position readings were used since these cna be directly integrated into the Ardupilot codebase immediately.
+For the purpose of this research the position readings were used since these can be directly integrated into the Ardupilot codebase immediately.
 Furthermore, the tag was configured to be used in the tracking mode to improve the accuracy of the measurements.
 Lastly, from section:~\ref{sec:op-params} and notes from the Pozyx team and ~\citet{evaluwb} 4 anchors may not provide sufficient data for a full 3D position so the system was hardcoded to operate in a 2.5 dimension which means the height (z reading) was fixed on a surface so the tag calculated and provided (x,y, z reading) positioning when requested.
 The final step was to have this implemented on the Pixhawk with the Ardupilot firmware within the Beacon susbsystem of the code.
@@ -170,7 +170,7 @@ Appendix: ~\ref{subsec:ap_pozyx_test.cpp} also shows a unit test to ensure the s
 Although it was verified that the code was integrated and the measurements were being captured by the main vehicle code and EKF measurement function operating indoors prevented the internal compass/magnetometer from working properly.
 When the compass is disabled the 'yawAlignComplete' check, which is required by the EKF to see if beacon measurements are viable to use, is set whilst the UAV is in flight.
 Due to only having access to a FCU at the time, the onboard EKF estimates could not be obtained and sent via MAVLink without a refactor to the core code which is outside the scope of this research project.
-However, to rectify this a simple two state EKF was implemented in python utilising the recorded data to determine if viable position estimates could be generated that can be used in a UAV or robotic system.
+However, to rectify this a simple two state EKF's were implemented in python and on a mobile robot to determine if viable position estimates could be generated that can be used in a UAV or robotic system.
 
 \subsection*{EKF design}
 As discussed in Section:~\ref{sec:sensor_fusion} and the preceding section an EKF was implemented to improve the position estimates from the pozyx sensor.
@@ -230,6 +230,74 @@ An added benefit of using the pozyx sensor is that it is possible to obtain the 
 
 Another adjustment from the standard EKF is that an outliers measurements were not used.
 Outliers arose due to sudden jerks in motion causing the measurements coming out of the tag to be erratic and vary wildly in certain time steps.
+
+The above EKF design represents a pure pythonic approach using only the readings from the sensor.
+Given that it only has once set of observations it can be considered a simple filter rather than a state estimator.
+To emulate the process that should run on the Pixhawk is is desirable to actually incorporate another stream of measurements that would improve the position estimates.
+To this end a simple EKF was applied on a simple wheeled mobile robot running dead reckoning localisation.
+Without delving too much into the technicalities of the code since that was outside the scope of the project the robot sensors can be simplified to outputting the $(x,y)$ position based on left and right wheel encoder readings.
+Additionally, the board is Arduino based so integration with the Pozyx system is straightforward.
+Figure:~\ref{fig:poz_romi} shows how this system was connected and used.
+
+This following system of equations shows the EKF on the wheeled mobile robot:
+
+\begin{equation*}
+    \begin{split}
+        f(\hat{x},\hat{u},t) = \left[ \begin{array}{cc}
+                              x & 0\\
+                              0 & y
+        \end{array} \right]\\
+        z(\hat{x}) = \left[ \begin{array}{cc}
+                              x_{tag} & 0\\
+                              x_{encoders} & 0\\
+                                0 & y_{tag}\\
+                                0 & y_{encoders}
+        \end{array} \right]\\
+    \end{split}
+\end{equation*}
+
+
+Linearised state transition model:
+\[
+    F =
+    \left[ \begin{array}{cc}
+    1 & 0\\
+    0 & 1
+    \end{array}
+    \right]
+\]
+
+Linearised observation model:
+\[
+    H =
+    \left[ \begin{array}{cc}
+    1 & 0\\
+    1 & 0\\
+    0 & 1\\
+    0 & 1
+    \end{array}
+    \right]
+\]
+
+\[
+    R =
+%
+        \left[
+            \begin{array}{cccc}
+                Var(x)_{tag} & 0 & 0 & 0\\
+                0 & Var(x)_{encoders} & 0 & 0\\
+                0 & 0 & Var(y)_{tag}& 0 \\
+                0 & 0 & 0 & Var(y)_{encoders}
+            \end{array}
+        \right]
+\]
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.85\textwidth]{mtd/romi_pozyx}
+    \caption{Wheeled mobile robot equipped with the Pozyx Tag.}
+    \label{fig:poz_romi}
+\end{figure}
 
 \section{Summary}
 This section thoroughly discussed the methodology and design process used to achieve the objectives and scope of this research.
