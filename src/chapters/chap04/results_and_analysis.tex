@@ -86,8 +86,9 @@ In these tests the tag was moved along the chosen trajectory whilst NLOS occurre
     \label{tb:trajs}
 \end{table}
 Figure:~\ref{fig:nlos_ppl} shows the paths recorded for each of these trajectories.
-It can be seen that as expected the EKF smoothens the supposed trajectory providing a better estimate but it is unable to fully track the position of the tag in the environment.
-\begin{figure}[h!]
+It can be seen that as expected the EKF smoothens the supposed trajectory providing a better estimate.
+Noteworthy is that using the the IMU on the Pozyx tag causes the position to veer slightly on turns.
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}{0.7\textwidth}
             \includegraphics[width=\textwidth]{results/traingle_path_human(nlos)}
@@ -97,8 +98,96 @@ It can be seen that as expected the EKF smoothens the supposed trajectory provid
             \includegraphics[width=\textwidth]{results/movement_along_c_path_human}
             \caption{Movement along Trajectory 2}
     \end{subfigure}
-    \caption{Results obtained with NLOS and a single anchor.}
+    \caption{Results obtained with NLOS while the tag is moved by a person.}
     \label{fig:nlos_ppl}
 \end{figure}
+\newpage
+\section{Mobile robot results}\label{sec:mobile-robot-results}
+For the final bit of tests a wheels mobile robot was used.
+The system is a simple differential drive robot equipped with wheel encoders to provide dead reckoning position estimates.
+The data was collected in two modes:
+\begin{enumerate}
+    \item The tag was placed on the robot and the filter was used with the tag readings alone while the robot followed trajectory 2 above.
+    \item The tag was integrated into the embedded system of the robot and the tag's reading was fused with the dead reckoning data whilst following trajectory 2.
+\end{enumerate}
+The primary driving force for these tests was to eliminate the person required to move the tag and see if the position estimates would be viable in an autonomous robotic scenario such as the case of an UAV using the Ardupilot firmware.
+Figure:~\ref{fig:romi_nlos_1} shows the paths obtained for the test using the tag and EKF alone.
+A major problem that arose with the measured values occurred when a turn was being made and NLOS.
+Some of the measured points wildly deviated from the actual position of the robot although the implemented EKF algorithm is able to reduce some of the noise it is still susceptible to these errors since it is the only measurements being used.
+\begin{figure}[ht!]
+    \centering
+    \begin{subfigure}{0.7\textwidth}
+            \includegraphics[width=\textwidth]{results/romi_c_path_2}
+            \caption{Movement along Trajectory 1}
+    \end{subfigure}
+    \begin{subfigure}{0.7\textwidth}
+            \includegraphics[width=\textwidth]{results/romi_ekf_c_path}
+            \caption{Movement along Trajectory 2}
+    \end{subfigure}
+    \caption{Results obtained with NLOS while following Trajectory 2 on the WMR.}
+    \label{fig:romi_nlos_1}
+\end{figure}
 
+\begin{figure}[ht!]
+    \centering
+    \begin{subfigure}{0.65\textwidth}
+            \includegraphics[width=\textwidth]{results/romi_ekf_less_good}
+    \end{subfigure}
+    \begin{subfigure}{0.65\textwidth}
+            \includegraphics[width=\textwidth]{results/romi_ekf_embed_good_sink_start}
+    \end{subfigure}
+    \begin{subfigure}{0.65\textwidth}
+            \includegraphics[width=\textwidth]{results/romi_ekf_embed_good}
+    \end{subfigure}
+    \caption{Results obtained with NLOS while following Trajectory 2 on the WMR with the embedded EKF.}
+    \label{fig:romi_nlos_ekf}
+\end{figure}
 %\lipsum[2-10]
+For the second tests using the mobile robot an embedded EKF was implemented.
+Figure:~\ref{fig:romi_nlos_ekf} shows the result obtained from the fusion of the dead reckoning data and the Pozyx readings.
+From the plots it is clear that this implementation provides the best result when compared with the results gathered for Figures: ~\ref{fig:romi_nlos_1}, ~\ref{fig:nlos_ppl}.
+
+
+\section{Analysis of Results}\label{sec:analysis-of-results}
+From a qualitative point, the embedded EKF fusing fusing the dead reckoning data and tag data seems to outperform the other methods in terms of falling close to the actual path and being robust to the erratic behaviour introduced by NLOS.
+However a useful metric would be to see the distance from the supposed positions to the path being traveled.
+Since the robot moved autonomously and there was no perception of where it should be at a given time a way of effectively measuring the distance to the path needed to be designed.
+Figure:~\ref{fig:dist} shows what is available while data is being recorded.
+The green arrows represent the minimum distance for a candidate point and the path.
+Appendix:~\ref{app:app04} shows the general pseudo code to obtain the green distance for each point.
+A benefit of using a distance metric is that it is easy to interpret and ideally should be zero if the pose estimates are completely accurate.
+This also means that standard statistics on this distance metric would give a clear indication of which method produced the best results.
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[scale=0.8]{dist_metrics}
+    \caption{Illustration of how a distance metric was developed for analysis.}
+    \label{fig:dist}
+\end{figure}
+
+\begin{table}[ht!]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        & Max & Mean & Variance & Skew & Kurtosis \\
+        \hline
+        Trajectory 1 by human (Tag) & 0.331 & 0.114 & 0.006 & 0.7851 & -0.1624\\
+        \hline
+        Trajectory 2 by human (Tag) & 0.137 & 0.0431& 0.0009 & 1.0405 & 0.3421\\
+        \hline
+        Trajectory 2 by WMR (Tag) &  0.3297 & 0.05416 & 0.00189 & 1.0415 & 3.8087\\
+        \hline
+        \rowcolor{LightGreen}Trajectory 2 by WMR (Tag + Dead Reckoning)& 0.087 & 0.036 & 0.00047 & 0.1634 & -0.2665\\
+        \hline
+        Trajectory 2 by WMR(Dead Reckoning)& 0.1081 & 0.067 & 0.00136 & -0.9802 & -0.8165\\
+        \hline
+        Trajectory 2 by WMR (Tag) & 0.1124 & 0.069 & 0.00153 & -0.5188 & -1.352\\
+        \hline
+    \end{tabular}
+    \caption{Metrics for the Distance from each path for different tests and positions.}
+    \label{tb:results}
+\end{table}
+
+Table:~\ref{tb:results} shows the final metrics obtained for the various results.
+In addition to the EKF fused results the statistics for the tag and dead reckoning positions were included to set a benchmark for comparison.
+As expected the estimates combining the dead reckoning and tag readings clearly outperforms the others.
+The EKF implemented on the WMR is quite simple so it is expected that similar or even better results would be obtained on the FCU whilst in flight.

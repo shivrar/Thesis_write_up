@@ -16,8 +16,9 @@ From these systems and the overall aim of indoor localisation the following obje
     \item Based on the qualitative analysis and experiments determine the best configuration in a household to place the anchors for the system.
     \item Use the incoming data from the sensors to produce a suitable measurement/observation model for the pose of the system.
     \item Relay the data to a flight controller unit via a suitable hardware interface.
-    \item Delve into the firmware of the flight controller and apply sensor fusion algorithms on the flight controller to provide pose estimates.
-    \item Pipe the pose estimates to a companion computer for visualisation and higher level control of a UAV.
+    \item Delve into the firmware of the flight controller and integrate the sensor readings into the codebase.
+    \item Apply sensor fusion algorithms to provide pose estimates either onboard the flight controller or through some other medium.
+    \item Evaluate pose estimates in various scenarios to see if they are viable for use.
 \end{itemize}
 
 All of these objectives can be completed without flying the UAV autonomously.
@@ -26,4 +27,6 @@ Furthermore, with the autonomous flight being out of scope of this project much 
 Broadly, this means delving into the software libraries and interfaces for the Pozyx sensor, modifying and making additions to the Ardupilot flight stack to integrate the Pozyx sensor with the FCU,
 and finally digging into the MAVLINK protocol and libraries to use the pose estimates on a Raspberry Pi 3 Model B+ PSoC.
 To achieve these objectives a solid software engineering aproach would need to be applied with familiarity of Python and C++ programming languages.
+Additionally, pose estimates should be evaluated under various tests which are not ideal for the LPS system to see how robust the estimator is.
+A further limitation may be that due to the lack of accessible hardware and the scope of this research if pose estimates are unavailable from the flight controller a similar setup should be designed in order to closely emulate the results expected from the flight controller unit.
 

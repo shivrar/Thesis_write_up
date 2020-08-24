@@ -1,0 +1,18 @@
+%
+% file: localoperator.tex
+% author: Victor Brena
+% description: Briefly describes properties of the local operator.
+%
+
+\chapter{Appendix D}\label{app:app04}
+Psuedo code for distance metrics
+\begin{algorithm}
+    Generate line vector segments based on waypoints: line_vecs
+    Get a vector from the start of each line segment(line_vecs) vector to each point: line_to_recorded_vecs
+    dot_prod = dot($\frac{line\_to\_recorded\_vecsline\_vecs}{|line\_vecs|}$)
+    projections = min($\frac{line\_vecs}{|line\_vecs|}$, max(0, dot_prod))
+    norm_line_vecs = $\frac{line\_vecs}{|line\_vecs|}$
+    distances = length(line_to_recorded_vecs - projections*norm_line_vecs)
+    get_min_distance_for_each_point(distances)
+
+\end{algorithm}
