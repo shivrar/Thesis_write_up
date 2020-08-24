@@ -61,8 +61,6 @@ void AP_Beacon_PozyxI2C::_init(int8_t bus)
         set_beacon_position((uint8_t)i, Vector3f(x/1000.0f,y/1000.0f,z/1000.0f));
     }
 
-//    uint8_t protocol = POZYX_RANGE_PROTOCOL_PRECISION;
-//    this->reg_write(POZYX_RANGE_PROTOCOL, &protocol, 1);
 
     uint8_t algorithm = POZYX_POS_ALG_TRACKING;
     uint8_t pos_dim = 1;
@@ -75,11 +73,6 @@ void AP_Beacon_PozyxI2C::_init(int8_t bus)
     this->reg_write(POZYX_POS_Z, (uint8_t*)&z_pos, sizeof(int32_t));
 
     this->_update_beacons();
-
-//    if(this->reg_write(POZYX_POS_INTERVAL, (uint8_t*)&interval_ms, 2))
-//    {
-//        hal.console->printf("Error Setting Tag to continuous positioning\n");
-//    }
 }
 
 AP_Beacon_PozyxI2C::AP_Beacon_PozyxI2C(AP_Beacon &frontend):
@@ -198,16 +191,6 @@ void AP_Beacon_PozyxI2C::_update_tag()
     uint8_t error_code;
     this->reg_read(POZYX_INT_STATUS, &interrupt_status, 1);
 
-//    while(CHECK_BIT(interrupt_status, 1) != 1)
-//    {
-//        this->reg_read(POZYX_INT_STATUS, &interrupt_status, 1);
-//        if(AP_HAL::millis() - this->last_tag_update_ms > AP_BEACON_TIMEOUT_MS)
-//        {
-//            hal.console->printf("Positioning Has not completed\n");
-//            break;
-//        }
-//    }
-
     if(CHECK_BIT(interrupt_status, 0)  == 1){
         this->reg_read(POZYX_ERRORCODE, &error_code, 1);
         hal.console->printf("Error Code =%x\n", error_code);
@@ -233,45 +216,3 @@ void AP_Beacon_PozyxI2C::_update_tag()
 
 
 }
-
-//TODO: recheck this later
-
-//        if(this->reg_function(POZYX_DO_RANGING, (uint8_t*)_anchors+i, sizeof(uint16_t), nullptr, 1) == POZYX_FAILURE){
-//            hal.console->printf("Error in triggering ranging\n");
-//        }
-//        this->last_beacon_update_ms = AP_HAL::millis();
-//        bool error = false;
-//        uint8_t error_code;
-//        uint8_t interrupt_status;
-//        this->reg_read(POZYX_INT_STATUS, &interrupt_status, 1);
-//
-//        if(CHECK_BIT(interrupt_status, 0)  == 1){
-//            this->reg_read(POZYX_ERRORCODE, &error_code, 1);
-//            hal.console->printf("Error Code =%x\n", error_code);
-//            error = true;
-//        }
-//        if(error){
-//            hal.console->printf("Error occurred, unable to range\n");
-//        }
-//        while(CHECK_BIT(interrupt_status, 4) == 0)
-//        {
-//            this->reg_read(POZYX_INT_STATUS, &interrupt_status, 1);
-//
-//            if((AP_HAL::millis() - this->last_beacon_update_ms > AP_BEACON_TIMEOUT_MS))
-//            {
-//                // If we are unable to get the data out for the range measurmensents don't try to set the beacon distances
-//                hal.console->printf("Ranging has not finished before timeout\n");
-//                return;
-//            }
-//        }
-//        else {
-//            uint8_t range_data[11];
-//            if (this->reg_function(POZYX_DEVICE_GETRANGEINFO, (uint8_t*)_anchors+i, sizeof(uint16_t), range_data,
-//                                   11 * sizeof(uint8_t)) == POZYX_SUCCESS) {
-//                float distance;
-//                memcpy(&distance, range_data + 5, sizeof(uint32_t));
-//                set_beacon_distance((uint8_t) i, distance);
-//            } else {
-//
-//                hal.console->printf("Error in retrieving and setting beacon distance\n");
-//            }

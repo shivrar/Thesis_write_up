@@ -48,9 +48,11 @@ void loop(void)
     Location origin;
     float accuracy = 0.2f;
     beacon.get_vehicle_position_ned(pos, accuracy);
-    printf("Position: %f %f %f\n", static_cast<double>(pos.x), static_cast<double>(pos.y), static_cast<double>(pos.z));
+    printf("Position: %f %f %f\n", static_cast<double>(pos.x),
+     static_cast<double>(pos.y), static_cast<double>(pos.z));
     if (beacon.get_origin(origin)) {
-        printf("Origin: %il %il %il\n", static_cast<double>(origin.lat), static_cast<double>(origin.lng), static_cast<double>(origin.alt));
+        printf("Origin: %il %il %il\n", static_cast<double>(origin.lat),
+         static_cast<double>(origin.lng), static_cast<double>(origin.alt));
     }
     else{
         printf("This is where it's dying\n");
@@ -60,7 +62,8 @@ void loop(void)
 
         AP_Beacon::BeaconState state;
         beacon.get_beacon_data(i, state);
-        printf("Beacon %i, is %i with distance: %f\n", i, state.healthy, state.distance);
+        printf("Beacon %i, is %i with distance: %f\n", i, state.healthy,
+        state.distance);
 
     }
     hal.scheduler->delay(100);
