@@ -2,7 +2,7 @@
 \section{Indoor Localisation Systems}\label{sec:indoor-localisation-sensors}
 \subsection{Passive Systems}\label{subsec:passive-systems}
 %TODO: PUT IN MORE PAPERS CITING UWB AND WORK WITH UWB/POZYX -> look at the pozyx site
-In summary, passive systems do not require the object being tracked to have some of electronics on them to do positioning.
+In summary, passive systems do not require the object being tracked to have some of the electronics on them to do positioning.
 Some examples of passive systems are ~\citep{deak2012survey}:
 \begin{itemize}
     \item Computer Vision and Imaging systems.
@@ -10,7 +10,7 @@ Some examples of passive systems are ~\citep{deak2012survey}:
     \item Attenuation of signals.
     \item Differential air pressure.
 \end{itemize}
-A common example of computer vision based localisation is to use a setup consisting of multiple cameras in a space trying to detecting a single object.
+A common example of computer vision-based localisation is to use a setup consisting of multiple cameras in a space trying to detecting a single object.
 Using the intrinsic and extrinsic properties of each camera it is possible to determine the transform to the object in a given frame with relatively high accuracy.
 A prime example of this is the commercial VICON motion capture systems.
 ~\cite{aerialrobotsiitk} shows a drone application in which the UAV is positioned via using a VICON motion capture system.
@@ -33,7 +33,7 @@ Many indoor localisation techniques use this and some examples are ~\citep{deak2
     \item Radio-frequency identification
     \item UWB
     \item Wireless Local Area Network
-    \item Bluetooth Low energy (BLE)
+    \item Bluetooth Low Energy (BLE)
 \end{itemize}
 Many of these setups use an anchor and tag configuration.
 The tag receives signals from multiple anchors and triangulates the tag.
@@ -53,12 +53,12 @@ It is noted by the authors that a ranging approach with BLE is challenging since
 \end{figure}
 
 \section{Sensor Fusion}\label{sec:sensor_fusion}
-From the previous section we have described the basic principle of operation of the Pozyx system.
+From the previous section, we have described the basic principle of operation of the Pozyx system.
 With a tag we are able to at least determine a rough estimate of the position of a tag in a given reference frame.
 Additionally, the tag has an Inertial Measurement Unit (IMU), consisting of an Accelerometer, Gyroscope and Magnetometer, and an Altimeter.
 These are used in one of the operational modes of the Pozyx system in order to improve accuracy.
 The idea of sensor fusion is to combine multiple sources of data in order to get a fairly accurate estimate of the pose of the system,
-The measurements from the tag can be combined with the sensors onward a FCU in order to achieve this.
+The measurements from the tag can be combined with the sensors onboard an FCU in order to achieve this.
 The de-facto sensor fusion technique is called the Extended Kalman Filter (EKF).
 ~\citet{simpleekf} present a useful description and example of how the EKF works.
 Algorithmically, the EKF is a recursive process using predictions based on the dynamics of the vehicles and updating the estimate based on these predictions and measurements from various sources.
@@ -77,7 +77,7 @@ Where K is the Kalman gain, R is the Measurement Noise Covariance Matrix, Q is t
 %TODO: Look at add in another sensor fusion for indoor navigation here-> Look at the online wiki i did lol
 ~\citet{tsai1998localization} document work for localising a mobile robot using ultrasonic measurements.
 Although, the system was a wheeled mobile robot instead of a UAV, the calculations using the TOF measurements and dead reckoning data as well as the use of an EKF to improve the pose estimates are similar to what is trying to be achieved in this current project.
-A notable contribution of the work is the use of a voting scheme to obtain the best 'observation' for the the robot's orientation before being fed into the EKF algorithm.
+A notable contribution of the work is the use of a voting scheme to obtain the best 'observation' for the robot's orientation before being fed into the EKF algorithm.
 
 
 \section{Pozyx - Behind the Scenes}\label{sec:pozyx---behind-the-scenes}
@@ -89,8 +89,8 @@ For this research project a commercially available, active UWB sensor system is 
 %    \label{fig:twr}
 \end{figure}
 \subsection{Ultra-WideBand (UWB)}
-The core of the Pozyx system operates using an UWB approach.
-UWB is a short range, low energy, high bandwidth communication radio technology.
+The core of the Pozyx system operates using a UWB approach.
+UWB is a short-range, low energy, high bandwidth communication radio technology.
 Radio waves travel at the speed of light ($c=299792458ms^{-1}$) so using a TOF approach the range between a tag and an anchor can be obtained simply by:
 \[
     d = c*TOF
@@ -147,16 +147,16 @@ Furthermore, the work mentioned in this section proposes an algorithm with raw r
 The pose can be obtained via two modes: 1). A pure Two Way Ranging (TWR) Approach or 2.) A tracking approach using a Kalman prediction filter in addition to the TWR pose.
 %TODO: MARK HERE WITH MORE PAPERS EXPANDING UWB
 
-Additional work done by ~\citet{di2019evaluation} also perform an evaluation of UWB systems for indoor applications.
+Additional work done by ~\citet{di2019evaluation} also performs an evaluation of UWB systems for indoor applications.
 The work compares several commercial UWB systems available to consumers and their viability in ranging and pose estimation.
-The sensors are treated as black box systems and the proprietary algorithms for each system was used.
-The results documented in this paper shows useful steps to do a primary evaluation of multiple anchor configurations in a given space.
+The sensors are treated as black-box systems and the proprietary algorithms for each system were used.
+The results documented in this paper show useful steps to do a primary evaluation of multiple anchor configurations in a given space.
 
 \subsection{Pozyx Localisation}\label{subsec:pozyx-localisation}
 In contrast to the raw readings obtained in the previous work, the Pozyx system has been used in several localisation systems, both indoors and outdoors.
 Experiments done by ~\citet{destefano2019using} use the Pozyx system in multiple scenarios for the purpose of education.
-The setup is simple and the two dimensional positions, x and y, form the basis of  graphs that can be used to determine average velocities from linear interpolation of the a position versus time graph.
-Figures ~\ref{fig:bpozyx} and ~\ref{fig:stupozyx} show both how the physical setup looked and the some of the data collected.
+The setup is simple and the two-dimensional positions, x and y, form the basis of  graphs that can be used to determine average velocities from linear interpolation of a position versus time graph.
+Figures ~\ref{fig:bpozyx} and ~\ref{fig:stupozyx} show both how the physical setup looked and some of the data collected.
 Although the UWB positioning system has advantages over several other systems the researchers note that using the Pozyx system in this scenario is not ideal for several reasons.
 Due to the accuracy of the system ($\pm10cm$) leads to large variance in instantaneous velocity when calculations are done on a point to point basis.
 
@@ -179,9 +179,9 @@ The systems is proposed to operate in two ways: 1.) Using raw range values from 
 A modified version of the EKF is described in the first scenario.
 An additional check is done for outliers.
 Outliers can be described as measurements that do not fit the pattern of the previous measurements.
-If an outlier is detected it is simply not considered in that time step and the previous calculated values are used instead.
-The test environment was an outdoor scenario with range error characterisation test which allowed for optimal anchor placement and a suitable testbed for implementing multiple positioning algorithms.
-A similar methodology would be adapted for this work with focus on indoor limitations and the presence of dynamic obstacles (humans).
+If an outlier is detected it is simply not considered in that time step and the previously calculated values are used instead.
+The test environment was an outdoor scenario with a range error characterisation test which allowed for optimal anchor placement and a suitable testbed for implementing multiple positioning algorithms.
+A similar methodology would be adapted for this work with a focus on indoor limitations and the presence of dynamic obstacles (humans).
 %TODO:   ^ This paper can be expanded on a little more.
 
 
@@ -190,14 +190,14 @@ A similar methodology would be adapted for this work with focus on indoor limita
 Before continuing it should be noted that ~\citet{ardupilotarduino} has addressed the idea of combining the Pozyx system with a Flight controller using the Ardupliot firmware.
 The implementation uses the Pozyx tag's compatibility with the Arduino UNO R3 or R2 pin layout.
 The Pozyx Arduino library is used to gather the relevant information from the Pozyx tag and then send it via serial to the FCU.
-This research aims to bridge this gap in the hardware and remove the need for the Arduino UNO for the indoor navigation.
+This research aims to bridge this gap in the hardware and remove the need for the Arduino UNO for indoor navigation.
 The major driving force of this is to minimize the amount of extra hardware that should be mounted on and indoor UAV.
 % TODO: Additional closing paragraph to help solidfy my options for the methodlogy and guide the reader. -> Why am i doing the technical work I am doing.
 % TODO: Major gaps -> Major gap in feasible and usable results for indoor loclisation of drones in a real scenario -> Kitchen for eg.
 % TODO: Find papers that show these lacking stuff.
 
 \subsection{Summary}
-From a overview of work done with UWB technology and the Pozyx system we can see it is a well researched area in terms of evaluating the performance in static scenarios with not much obstacles.
+From an overview of work done with UWB technology and the Pozyx system, we can see it is a well-researched area in terms of evaluating the performance in static scenarios with not many obstacles.
 However, there seems to be a gap of these systems being tested and localised in households where dynamic obstacles can be present in the area.
-Furthermore, a major objective of this research would be to directly integrate the Pozyx system directly with a FCU and utilize the sensor fusion systems on board and evaluate the accuracy of the pose estimates.
+Furthermore, a major objective of this research would be to directly integrate the Pozyx system directly with an FCU and utilize the sensor fusion systems onboard and evaluate the accuracy of the pose estimates.
 To that end, a similar approach taken by ~\citet{di2019evaluation} would be used to first find an optimal anchor configuration and then evaluate it similar to how experiments were carried out by ~\citet{conceiccao2017robot}.

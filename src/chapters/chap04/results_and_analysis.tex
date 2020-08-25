@@ -12,25 +12,25 @@ The following tests were carried out:
 \end{enumerate}
 
 Tests 1\-2 were carried out to cover the trivial cases as seen in ~\ref{sec:op-params} where NLOS proved ot be an issue for even a stationary tag.
-Test 3 was done to see if the processing on the Pozyx tag in addition to an EKF would be able to provide suitable pose estimates without need for any additional measurements.
+Test 3 was done to see if the processing on the Pozyx tag in addition to an EKF would be able to provide suitable pose estimates without the need for any additional measurements.
 Test 4 provides a similar setup to test 3 but with the added effect of the robot being able to accurately and consistently pass though desired waypoints.
 Finally, test 5 repeats the waypoint following of tests 3\-4 but with the embedded EKF fusing both dead reckoning data and Pozyx tag readings.
-To provide NLOS, rather than systematically occlude an anchor and tag a person walked a fixed path, see Figure:~\ref{fig:occlude}, at random speeds whilst the data was being recorded this was done as to emulate a more relistic environment that the system would be used in.
+To provide NLOS, rather than systematically occlude an anchor and tag a person walked a fixed path, see Figure:~\ref{fig:occlude}, at random speeds whilst the data was being recorded this was done as to emulate a more realistic environment that the system would be used in.
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[scale=0.8]{Test_procedure}
-    \caption{Path taken by person to randomly occlude anchors and tag.}
+    \caption{Path taken by the person to randomly occlude anchors and tag.}
     \label{fig:occlude}
 \end{figure}
 
 
 \section{Stationary Tags}\label{sec:stationary-tags}
 For the stationary tag tests, the tag was placed on a known point in the workspace and it was introduced to the basic limitations discussed in previous chapters.
-The results for the loss of a single anchor was no different than the case recorded previously without the EKF.
+The results for the loss of a single anchor was no different than the case recorded previously without the EKF .
 However, Figure: ~\ref{fig:stat_anchors} shows the results obtained with the tags located at various positions whilst a person walks randomly in the environment.
-In contrast to the previous section it can be seen the system with the current configuration and EKF is able to withstand NLOS between the anchors and the tag with minimal change in the perceived position.
-However, it is evident that the system is now susceptible to a steady state error which is expected due to the Pozyx's integration with an IMU.
+In contrast to the previous section, it can be seen the system with the current configuration and EKF is able to withstand NLOS between the anchors and the tag with minimal change in the perceived position.
+However, it is evident that the system is now susceptible to a steady-state error which is expected due to the Pozyx's integration with an IMU .
 The tag's position will not change drastically and this error will be present as long as the tag is stationary.
 The following sections will have the Pozyx time in motion so this error is expected to reduce.
 
@@ -53,10 +53,10 @@ The following sections will have the Pozyx time in motion so this error is expec
 \end{figure}
 \newpage
 \section{Person moving the tag}\label{sec:person-moving-the-tag}
-Two trajectories were outlined for these subset of tests.
+Two trajectories were outlined for these subsets of tests.
 Table:~\ref{tb:trajs} shows the waypoints of each of the trajectories.
-Trajectory one is a quadrilateral whilst trajectory two is a simply just a combination of straight line segments.
-In these tests the tag was moved along the chosen trajectory whilst NLOS occurred randomly due to a person walking.
+Trajectory one is a quadrilateral whilst trajectory two is simply just a combination of straight-line segments.
+In these tests, the tag was moved along the chosen trajectory whilst NLOS occurred randomly due to a person walking.
 \begin{table}[ht!]
     \centering
     \begin{tabular}{|c|c|}
@@ -87,7 +87,7 @@ In these tests the tag was moved along the chosen trajectory whilst NLOS occurre
 \end{table}
 Figure:~\ref{fig:nlos_ppl} shows the paths recorded for each of these trajectories.
 It can be seen that as expected the EKF smoothens the supposed trajectory providing a better estimate.
-Noteworthy is that using the the IMU on the Pozyx tag causes the position to veer slightly on turns.
+Noteworthy is that using the IMU on the Pozyx tag causes the position to veer slightly on turns.
 \begin{figure}[ht!]
     \centering
     \begin{subfigure}{0.7\textwidth}
@@ -103,7 +103,7 @@ Noteworthy is that using the the IMU on the Pozyx tag causes the position to vee
 \end{figure}
 \newpage
 \section{Mobile robot results}\label{sec:mobile-robot-results}
-For the final bit of tests a wheels mobile robot was used.
+For the final bit of tests, a wheels mobile robot was used.
 The system is a simple differential drive robot equipped with wheel encoders to provide dead reckoning position estimates.
 The data was collected in two modes:
 \begin{enumerate}
@@ -113,7 +113,7 @@ The data was collected in two modes:
 The primary driving force for these tests was to eliminate the person required to move the tag and see if the position estimates would be viable in an autonomous robotic scenario such as the case of an UAV using the Ardupilot firmware.
 Figure:~\ref{fig:romi_nlos_1} shows the paths obtained for the test using the tag and EKF alone.
 A major problem that arose with the measured values occurred when a turn was being made and NLOS.
-Some of the measured points wildly deviated from the actual position of the robot although the implemented EKF algorithm is able to reduce some of the noise it is still susceptible to these errors since it is the only measurements being used.
+Some of the measured points wildly deviated from the actual position of the robot although the implemented EKF algorithm is able to reduce some of the noise it is still susceptible to these errors since it is the only measurement being used.
 \begin{figure}[ht!]
     \centering
     \begin{subfigure}{0.7\textwidth}
@@ -143,18 +143,18 @@ Some of the measured points wildly deviated from the actual position of the robo
     \label{fig:romi_nlos_ekf}
 \end{figure}
 %\lipsum[2-10]
-For the second tests using the mobile robot an embedded EKF was implemented.
+For the second test using the mobile robot, an embedded EKF was implemented.
 Figure:~\ref{fig:romi_nlos_ekf} shows the result obtained from the fusion of the dead reckoning data and the Pozyx readings.
-From the plots it is clear that this implementation provides the best result when compared with the results gathered for Figures: ~\ref{fig:romi_nlos_1}, ~\ref{fig:nlos_ppl}.
+From the plots, it is clear that this implementation provides the best result when compared with the results gathered for Figures: ~\ref{fig:romi_nlos_1}, ~\ref{fig:nlos_ppl}.
 
 
 \section{Analysis of Results}\label{sec:analysis-of-results}
-From a qualitative point, the embedded EKF fusing fusing the dead reckoning data and tag data seems to outperform the other methods in terms of falling close to the actual path and being robust to the erratic behaviour introduced by NLOS.
-However a useful metric would be to see the distance from the supposed positions to the path being traveled.
+From a qualitative point, the embedded EKF fusing the dead reckoning data and tag data seems to outperform the other methods in terms of falling close to the actual path and being robust to the erratic behaviour introduced by NLOS.
+However, a useful metric would be to see the distance from the supposed positions to the path being traveled.
 Since the robot moved autonomously and there was no perception of where it should be at a given time a way of effectively measuring the distance to the path needed to be designed.
 Figure:~\ref{fig:dist} shows what is available while data is being recorded.
 The green arrows represent the minimum distance for a candidate point and the path.
-Appendix:~\ref{app:app04} shows the general pseudo code to obtain the green distance for each point.
+Appendix:~\ref{app:app04} shows the general pseudo-code to obtain the green distance for each point.
 A benefit of using a distance metric is that it is easy to interpret and ideally should be zero if the pose estimates are completely accurate.
 This also means that standard statistics on this distance metric would give a clear indication of which method produced the best results.
 \begin{figure}[ht!]
@@ -188,6 +188,6 @@ This also means that standard statistics on this distance metric would give a cl
 \end{table}
 
 Table:~\ref{tb:results} shows the final metrics obtained for the various results.
-In addition to the EKF fused results the statistics for the tag and dead reckoning positions were included to set a benchmark for comparison.
+In addition to the EKF fused results, the statistics for the tag and dead reckoning positions were included to set a benchmark for comparison.
 As expected the estimates combining the dead reckoning and tag readings clearly outperforms the others.
 The EKF implemented on the WMR is quite simple so it is expected that similar or even better results would be obtained on the FCU whilst in flight.

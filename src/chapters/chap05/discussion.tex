@@ -1,7 +1,7 @@
 \chapter{Discussion}\label{ch:discussion}
-\initial{I}n Chapters:~\ref{ch:intro} and ~\ref{ch:literature-review} the use and efficacy of using an UWB based system for localisation was explored.
-Although many of the research dove into the localisation not many highlighted the use in real life scenarios and environments.
-In the previous research the systems researched the use in GPS denied environments but not much covered the the cases of dynamic obstacles in the environment that provide NLOS and hence errors in TOF calculations.
+\initial{I}n Chapters:~\ref{ch:intro} and ~\ref{ch:literature-review} the use and efficacy of using a UWB based system for localisation was explored.
+Although many of the research dove into the localisation not many highlighted the use in real-life scenarios and environments.
+In the previous research, the systems researched the use in GPS denied environments but not much covered the cases of dynamic obstacles in the environment that provide NLOS and hence errors in TOF calculations.
 As mentioned previously, ~\citet{evaluwb} provide a comprehensive analysis of the and evaluation of localisation based on the Pozyx system but it addressed the issues of static obstacles with NLOS.
 The gap of research addressing dynamic obstacles in the environment using the UWB Pozyx sensor is where this research comes in.
 The overall aim of this research can be split into two overall tasks:
@@ -10,9 +10,9 @@ The overall aim of this research can be split into two overall tasks:
     \item Evaluate an approach to use the sensor readings to get viable position estimates.
 \end{enumerate}
 
-From Section:~\ref{sec:technical-design} it is shown that it is possible to pipe the information from the tag to the Pixhawk unit through it's I2C interface.
+From Section:~\ref{sec:technical-design} it is shown that it is possible to pipe the information from the tag to the Pixhawk unit through its I2C interface.
 Furthermore, the written test, see Appendix:~\ref{subsec:ap_pozyx_test.cpp}, confirms that the Pixhawk's AP\_Beacon subsystem is indeed able to access the Pozyx tag's measurement through the designed interface.
-Through a right configuration of user parameters and recompilation of the codebase it was also confirmed that the new AP\_Beacon library runs successfully with the main code's scheduler to update the beacon's sensor reading periodically so that the other subsystems in the codebase can use.
+Through the right configuration of user parameters and recompilation of the codebase, it was also confirmed that the new AP\_Beacon library runs successfully with the main code's scheduler to update the beacon's sensor reading periodically so that the other subsystems in the codebase can use.
 The core subsystem that uses the beacon's frontend readings would be the Ardupilot's EKF estimation modules.
 Delving into that subsystem it was confirmed that it was using the beacon frontend to obtain vehicle positions but was not using it in the fusion step of the EKF to estimate position.
 At the end of Section:~\ref{subsec:sensor-fusion} it was discovered that the EKF required certain checks to be passed before fusing the beacon's  vehicle position and due to the lack of hardware this could not be accomplished.
@@ -30,6 +30,6 @@ Unreliable readings like these is the why reason fusing multiple measurements of
 Dead reckoning is a common way of determining pose estimates in vehicles and robotic systems.
 Ardupilot also uses dead reckoning in its EKF so employing one here addresses the capabilities and position estimates that can be possible when the system is finally used on a UAV.
 From the distance metrics seen in Table:~\ref{tb:results} it is clear to see that a simple fusion of data is able to increase the position estimates greatly with the max distance from line (8.7cm) being better than the quoted accuracy of the Pozyx system ($\pm10$cm) even with NLOS present.
-In general the closer any of the distance metrics are to zero the better the positioning result.
+In general, the closer any of the distance metrics are to zero the better the positioning result.
 
 %\lipsum[2-8]
