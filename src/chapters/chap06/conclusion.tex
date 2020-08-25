@@ -1,3 +1,22 @@
 \chapter{Conclusion}\label{ch:conclusion}
-\initial{T}o document the effectiveness of the Pozyx setup results were gathered in several scenarios.
-\lipsum[2-8]
+\section{Conclusions}\label{sec:conclusions}
+\initial{T}hroughout this research the idea of using a commercially available UWB sensor system for indoor localisation was thoroughly checked.
+Addressing the research question and objectives a software engineering approach was employed to select various hardware options, choose suitable communication interfaces based on previous technical work and exiting software solutions,
+integrate libraries with the existing code base so it can run seamlessly in the main code and finally run unit and integration tests to ensure everything worked as needed.
+Although a viable design was developed and presented it could not be tested due to limitations and for the evaluation of the Pozyx system another embedded system was used.
+From the evaluation a major issue that was immediately identified from the measurements was the large positional error that arose when the system was in motion and NLOS was occured.
+This showed that the Pozyx system alone cannot be used for localisation and navigation.
+However as with any robotic or UAV system it is not expected that only one sensor would be used to generate position estimates.
+As seen from the Table: ~\ref{tb:results} the use of an EKF with a simple model and dead reckoning measurements of position greatly improved the position estimates and it is expected that any system that employs this, such as the Ardupilot codebase, should be able to get better position estimates in order to carry out
+their autonomous tasks.
+
+\section{Limitations, Mitigation and Future Work}\label{sec:limitations,-mitigations-and-future-work}
+Due to the current pandemic situation some of the major objectives of the research project had to be changed.
+Initially, it was planned that a UAV would be flown autonomously indoors utilising the poses from the FCU in a higher level planner but due to the closing of the labs this objective was removed.
+There was no drone readily available to test the new software on and there was no way to easily determine the ground truth positions of the UAV while in flight.
+Additionally, having no UAV available hindered the testing on the FCU since the FCU had to be in flight in order for the EKF to use the Pozyx readings in the position estimates.
+To compensate for the lack of position estimates from the Pixhawk and Ardupilot, another robot was used that provided dead reckoning data.
+This was suitable for the scenario since a similar approach is employed in Ardupilot although how the dead reckoning estimates were generated is different due to it being a different vehicle/actuated system.
+A future work and extension of this research would be to actually test the developed AP\_Beacon system on an UAV and compare the pose estimates while in flight to the ground truth estimates.
+Furthermore, the de-scoped objective of actually navigating the UAV would be another extension of this research and work towards a completely viable indoor navigation system.
+%\lipsum[2-8]
