@@ -2,9 +2,9 @@
 \initial{I}n Chapters:~\ref{ch:intro} and ~\ref{ch:literature-review} the use and efficacy of using a UWB based system for localisation was explored.
 Although many of the research dove into the localisation not many highlighted the use in real-life scenarios and environments.
 In the previous research, the systems researched the use in GPS denied environments but not much covered the cases of dynamic obstacles in the environment that provide NLOS and hence errors in TOF calculations.
-As mentioned previously, ~\citet{evaluwb} provide a comprehensive analysis of the and evaluation of localisation based on the Pozyx system but it addressed the issues of static obstacles with NLOS.
+As mentioned previously, ~\citet{evaluwb} provide a comprehensive analysis and evaluation of localisation based on the Pozyx system but it addressed the issues of static obstacles with NLOS.
 The gap of research addressing dynamic obstacles in the environment using the UWB Pozyx sensor is where this research comes in.
-The overall aim of this research can be split into two overall tasks:
+The aim of this research can be split into two broad tasks:
 \begin{enumerate}
     \item Show it is possible for an FCU to receive and use the Pozyx sensor readings.
     \item Evaluate an approach to use the sensor readings to get viable position estimates.
@@ -14,19 +14,19 @@ From Section:~\ref{sec:technical-design} it is shown that it is possible to pipe
 Furthermore, the written test, see Appendix:~\ref{subsec:ap_pozyx_test.cpp}, confirms that the Pixhawk's AP\_Beacon subsystem is indeed able to access the Pozyx tag's measurement through the designed interface.
 Through the right configuration of user parameters and recompilation of the codebase, it was also confirmed that the new AP\_Beacon library runs successfully with the main code's scheduler to update the beacon's sensor reading periodically so that the other subsystems in the codebase can use.
 The core subsystem that uses the beacon's frontend readings would be the Ardupilot's EKF estimation modules.
-Delving into that subsystem it was confirmed that it was using the beacon frontend to obtain vehicle positions but was not using it in the fusion step of the EKF to estimate position.
+Researching that subsystem it was confirmed that the beacon frontend was being used to obtain vehicle positions but was not using it in the fusion step of the EKF to estimate position.
 At the end of Section:~\ref{subsec:sensor-fusion} it was discovered that the EKF required certain checks to be passed before fusing the beacon's  vehicle position and due to the lack of hardware this could not be accomplished.
 After reviewing the objectives and scope of this research project it was determined that the refactor required needed to get the estimates from the Pixhawk was not necessary.
-It was proven that the data can be used on the Pixhawk and the position estimates can be obtained via other mediums in order to evaluate the use of the Pozyx system in indoor localisation with persons in the environment.
+It was proven that the data can be used on the Pixhawk and the position estimates can be obtained via other methods in order to evaluate the use of the Pozyx system in indoor localisation with persons in the environment.
 
-To evaluate the use of the sensor for indoor localisation test scenarios were developed as seen in Chapter:~\ref{ch:results-and-analysis}.
+To evaluate the use of the sensor for indoor localisation mutliple scenarios were developed as seen in Chapter:~\ref{ch:results-and-analysis}.
 Since EKF's are used commonly in navigation and control systems, as seen in the case of Ardupilot, it was utilised in this research in order to get position estimates in the household environment.
 The EKF was implemented in two ways as seen in Section:~\ref{subsec:sensor-fusion} with one using the tag measurements alone and an embedded one combining dead reckoning data with the tag readings.
 From the tag's measurements while a person walked randomly in the environment it was shown that this caused major issues in the readings, particularly when NLOS occurred while the tag was being turned.
 This result was expected since the tag was configured to utilise its internal IMU in a filtering algorithm.
-The combination of increased TOF readings due to NLOS and the IMU readings whilst in motion gave substantial positioning errors of the magnitude of hundreds of centimeters.
+The combination of increased TOF readings due to NLOS and the IMU readings whilst in motion gave substantial positioning errors of magnitude of hundreds of centimeters.
 These positioning errors can be seen prominently in Figure: ~\ref{fig:romi_nlos_1}.
-Unreliable readings like these is the why reason fusing multiple measurements of state is necessary.
+Unreliable readings like these are why fusing multiple measurements of state is necessary.
 Dead reckoning is a common way of determining pose estimates in vehicles and robotic systems.
 Ardupilot also uses dead reckoning in its EKF so employing one here addresses the capabilities and position estimates that can be possible when the system is finally used on a UAV.
 From the distance metrics seen in Table:~\ref{tb:results} it is clear to see that a simple fusion of data is able to increase the position estimates greatly with the max distance from line (8.7cm) being better than the quoted accuracy of the Pozyx system ($\pm10$cm) even with NLOS present.

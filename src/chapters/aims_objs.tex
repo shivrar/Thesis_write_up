@@ -1,32 +1,33 @@
 \section{Aims \& Objectives}\label{sec:aims_objs}
 
-    In ~\ref{ch:intro} we briefly touched on what would be addressed over the course of this research.
+Section:~\ref{ch:intro} briefly touched on what was addressed over the course of this research.
 Expanding on that, the research would entail the use of the commercial version of a UWB sensor for positioning from ~\cite{pozyx2018pozyx}.
-At a high level the project and be split into three modules that must be researched, unit tested, and finally integrated.
-Figure ~\ref{fig:ds} highlights the major systems within the project and are as follows:
+At a high level the project was split into three modules that was researched, unit tested and finally integrated.
+Figure ~\ref{fig:ds} highlights the major systems within the project and they are listed:
 \begin{itemize}
     \item The Pozyx LPS providing measurements that will be used in localisation.
     \item A flight controller collating fusing various observations from sensors to provide a pose estimate.
     \item A companion computer to visualise and utilise the pose information in a meaningful manner.
 \end{itemize}
 
-From these systems and the overall aim of indoor localisation the following objectives were created:
+From these systems, with the overall aim of indoor localisation, the following objectives were created:
 \begin{itemize}
-    \item Evaluation and qualitative analysis of the LPS, documentation limitations from previously done work, and current physical setups as well as compare with other ranging standards.
+    \item Evaluation and qualitative analysis of the LPS, documented limitations from previously done work and current physical setups.
     \item Based on the qualitative analysis and experiments determine the best configuration in a household to place the anchors for the system.
     \item Use the incoming data from the sensors to produce a suitable measurement/observation model for the pose of the system.
     \item Relay the data to a flight controller unit via a suitable hardware interface.
     \item Delve into the firmware of the flight controller and integrate the sensor readings into the codebase.
     \item Apply sensor fusion algorithms to provide pose estimates either onboard the flight controller or through some other medium.
-    \item Evaluate pose estimates in various scenarios to see if they are viable for use.
+    \item Evaluate pose estimates in various scenarios to assess their viability.
 \end{itemize}
 
-All of these objectives can be completed without flying the UAV autonomously.
-Given the current situation and time-frame, it was determined that setting up the pipelines to visualise the localisation in realtime from the companion computer is adequate for the last objective.
+These objectives can all be completed without flying the UAV autonomously.
+Given the current situation and time-frame, it was determined that setting up the pipelines to visualise the localisation in realtime from the companion computer was adequate for the last objective.
 Furthermore, with the autonomous flight being out of the scope of this project much of the work fell into software engineering to achieve the overall aim.
-Broadly, this means delving into the software libraries and interfaces for the Pozyx sensor, modifying and making additions to the Ardupilot flight stack to integrate the Pozyx sensor with the FCU,
-and finally digging into the MAVLINK protocol and libraries to use the pose estimates on a Raspberry Pi 3 Model B+ PSoC.
-To achieve these objectives a solid software engineering approach would need to be applied with familiarity of Python and C++ programming languages.
-Additionally, pose estimates should be evaluated under various tests which are not ideal for the LPS system to see how robust the estimator is.
-A further limitation may be that due to the lack of accessible hardware and the scope of this research if pose estimates are unavailable from the flight controller a similar setup should be designed in order to closely emulate the results expected from the flight controller unit.
+This means investigating into the software libraries and interfaces for the Pozyx sensor, modifying and making additions to the Ardupilot flight stack to integrate the Pozyx sensor with the FCU,
+and researching the MAVLINK protocol and libraries to use the pose estimates on a Raspberry Pi 3 Model B+ PSoC.
+To achieve these objectives a solid software engineering approach was applied with familiarity of Python and C++ programming languages.
+Additionally, pose estimates should be evaluated under various tests which are not ideal for the LPS system to see how robust the estimator was.
+A further limitation was due to the lack of accessible hardware and the scope of this research, if pose estimates are unavailable from the flight controller a similar setup should be designed.
+This was done to closely emulate the results expected from the flight controller unit.
 

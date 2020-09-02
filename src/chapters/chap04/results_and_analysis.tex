@@ -1,7 +1,7 @@
 \chapter{Results and Analysis}\label{ch:results-and-analysis}
 \initial{T}o document the effectiveness of the Pozyx setup results were gathered in several scenarios.
 Section: ~\ref{sec:op-params} shows some of the results obtained in a configuration step and determining the limitations of the unprocessed data.
-In this chapter we will aim to show the effectiveness of the developed system and it's feasibility in a kitchen which is known to have dynamic obstacles(people) that provide NLOS.
+In this chapter we will aim to show the effectiveness of the developed system and its feasibility in a kitchen which is known to have dynamic obstacles(people) that provide NLOS.
 The following tests were carried out:
 \begin{enumerate}
     \item Stationary tag with EKF and loss of a single anchor.
@@ -13,11 +13,12 @@ The following tests were carried out:
 
 %TODO: add in standard results and those DIST meatrics
 
-Tests 1\-2 were carried out to cover the trivial cases as seen in ~\ref{sec:op-params} where NLOS proved ot be an issue for even a stationary tag.
+Tests 1-2 were carried out to cover the trivial cases as seen in ~\ref{sec:op-params} where NLOS proved ot be an issue for even a stationary tag.
 Test 3 was done to see if the processing on the Pozyx tag in addition to an EKF would be able to provide suitable pose estimates without the need for any additional measurements.
-Test 4 provides a similar setup to test 3 but with the added effect of the robot being able to accurately and consistently pass though desired waypoints.
-Finally, test 5 repeats the waypoint following of tests 3\-4 but with the embedded EKF fusing both dead reckoning data and Pozyx tag readings.
-To provide NLOS, rather than systematically occlude an anchor and tag a person walked a fixed path, see Figure:~\ref{fig:occlude}, at random speeds whilst the data was being recorded this was done as to emulate a more realistic environment that the system would be used in.
+Test 4 provides a similar setup to Test 3 but with the added effect of the robot being able to accurately and consistently pass though desired waypoints.
+Finally, Test 5 repeats the waypoint following of tests 3-4 but with the embedded EKF fusing both dead reckoning data and Pozyx tag readings.
+To provide NLOS, rather than systematically occlude an anchor and tag, a person walked a fixed path (see Figure:~\ref{fig:occlude}) at random speeds whilst the data was being recorded.
+This was done as to emulate a more realistic environment that the system would be used in.
 
 \begin{figure}[ht!]
     \centering
@@ -49,7 +50,7 @@ Table:~\ref{tb:results} shows some statistics gathered from these ideal scenario
 \end{figure}
 \newpage
 \section{Stationary Tags}\label{sec:stationary-tags}
-For the stationary tag tests, the tag was placed on a known point in the workspace and it was introduced to the basic limitations discussed in previous chapters.
+For the stationary tag tests, the tag was placed at a known point in the workspace and it was introduced to the basic limitations discussed in previous chapters.
 The results for the loss of a single anchor was no different than the case recorded previously without the EKF .
 However, Figure: ~\ref{fig:stat_anchors} shows the results obtained with the tags located at various positions whilst a person walks randomly in the environment.
 In contrast to the previous section, it can be seen the system with the current configuration and EKF is able to withstand NLOS between the anchors and the tag with minimal change in the perceived position.
@@ -78,7 +79,7 @@ The following sections will have the Pozyx time in motion so this error is expec
 \section{Person moving the tag}\label{sec:person-moving-the-tag}
 Two trajectories were outlined for these subsets of tests.
 Table:~\ref{tb:trajs} shows the waypoints of each of the trajectories.
-Trajectory one is a quadrilateral whilst trajectory two is simply just a combination of straight-line segments.
+Trajectory one is a quadrilateral whilst trajectory two is a combination of straight-line segments.
 In these tests, the tag was moved along the chosen trajectory whilst NLOS occurred randomly due to a person walking.
 \begin{table}[ht!]
     \centering
@@ -133,10 +134,10 @@ The data was collected in two modes:
     \item The tag was placed on the robot and the filter was used with the tag readings alone while the robot followed trajectory 2 above.
     \item The tag was integrated into the embedded system of the robot and the tag's reading was fused with the dead reckoning data whilst following trajectory 2.
 \end{enumerate}
-The primary driving force for these tests was to eliminate the person required to move the tag and see if the position estimates would be viable in an autonomous robotic scenario such as the case of an UAV using the Ardupilot firmware.
+The primary driving force for these tests was to eliminate the person required to move the tag and see if the position estimates would be viable in an autonomous robotic scenario such as the case of a UAV using the Ardupilot firmware.
 Figure:~\ref{fig:romi_nlos_1} shows the paths obtained for the test using the tag and EKF alone.
 A major problem that arose with the measured values occurred when a turn was being made and NLOS.
-Some of the measured points wildly deviated from the actual position of the robot although the implemented EKF algorithm is able to reduce some of the noise it is still susceptible to these errors since it is the only measurement being used.
+Some of the measured points wildly deviated from the actual position of the robot, although the implemented EKF algorithm is able to reduce some of the noise it is still susceptible to these errors since it is the only measurement being used.
 \begin{figure}[ht!]
     \centering
     \begin{subfigure}{0.7\textwidth}

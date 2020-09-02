@@ -1,22 +1,23 @@
 \section{Background Research}\label{sec:background}
 Indoor localisation has become a core part of many systems in recent years.
-These range from robotics, multimedia, logistics, and sporting systems.
+These range from robotics, multimedia, logistics and sporting systems.
 %Several modern localisation systems use signals and various analysis techniques to do positioning.
-Modern localisation systems can be split into active or passive systems, active systems require the system being localised to have electronics to either process or send information that will be used to determine location.
+Modern localisation systems can be split into active or passive systems.
+Active systems require the system being localised to have electronics to either process or send information that will be used to determine location.
 In passive systems the position is determined  based on a variance of a measured signal or image data.
 As noted by ~\cite{deak2012survey}, some of these techniques include, Received Signal Strength Indicator (RSSI), Time of Arrival (TOA), Time Difference of Arrival (TDOA) and Angle of Arrival (AOA).
 The Pozyx commercial system uses UWB signals with a TOF technique in order to determine the position of a receiver (tag) in a network of transmitters (anchors).
 Since processing is done on-board the tag, it falls under the active localisation category.
-Active systems are ideal for indoor localisation systems for drones since the positional data can be fed directly to FCU's or companion computers in order to correct pose estimates calculated by the system directly.
+Active systems are ideal for indoor localisation systems for UAV's as the positional data can be fed directly to FCU's or companion computers in order to correct pose estimates.
 
-As noted by the producers of Pozyx the core of the system uses a communication bandwidth of $\approx 500M Hz$, this results in pulses of $0.16ns$ wide.
+As noted by the producers of Pozyx, the core of the system uses a communication bandwidth of $\approx 500M Hz$ this results in pulses of $0.16ns$ wide.
 Assuming that speed of light is $299792458ms^-1$ we get pulses of length $0.04797m$ which is very small and hence robust to noise from reflections.
 The major factors affecting the performance of the system would be materials that would slow down the signals before they reach the tag.
-So No Line of Sight (NLOS), conductors and changing mediums of travel are noted to affect the performance the most.
+No Line of Sight (NLOS), conductors and changing mediums of travel are noted to affect the performance the most.
 
 With the increasing complexity of FCU's it is possible to do relatively dense calculations in a real-time scenario without delegating them to a separate processing system.
 This is beneficial to indoor drone systems since they need to be small and maneuverable.
 A standard FCU comes equipped with several standard communication interfaces (I2C, Serial, SPI) so integrating external sensors is possible.
 Furthermore, multiple autopilot firmware provides a Hardware Abstraction Layer (HAL) making any sensor integration developed on one unit easily ported to another system.
 Additionally, onboard libraries contain sensor fusion implementations (Extended Kalman Filter (EKF)) that can combine the Pozyx data and on-board sensor data to provide fairly accurate positional data while in motion.
-Given that EKF's use in localisation an alternative can be developed that can provide position estimates similar to what can be obtained from the FCU.
+Given EKF's use in localisation, an alternative can be developed that can provide position estimates similar to what can be obtained from the FCU.

@@ -1,15 +1,16 @@
 \section{Operation Parameters}\label{sec:op-params}
 %\lipsum[2-4]
-As mentioned in the previous section:~\ref{sec:anchor-configurations} we determined the best anchor configurations for the given environment but the results were collected in an ideal scenario.
-From work done by ~\citet{evaluwb} we can see that the major factor affecting the positional accuracy seems to be No Line Of Sight (NLOS) between the anchors and a tag at any given time.
+As mentioned in the Section:~\ref{sec:anchor-configurations} the best anchor configurations for the given environment was determined  but the results were collected in an ideal scenario.
+From work done by ~\citet{evaluwb} it was seen that the major factor affecting the positional accuracy seems to be No Line Of Sight (NLOS) between the anchors and a tag at any given time.
                             %^TODO: Mention this in LR also?
-Furthermore, the work discusses the use of using an optimal triplet of anchors in order to improve accuracy this is an indication that a loss of a single anchor in the optimal configuration determined in the previous section should still yield reasonable results.
+Furthermore, the work discusses the use of using an optimal triplet of anchors in order to improve accuracy.
+This is an indication that a loss of a single anchor in the optimal configuration determined in the previous section should still yield reasonable results.
 To confirm the operational parameters the following experiments were carried out.
 
 \subsection{Loss of Anchor}\label{subsec:loss-of-anchor}
 In theory, a minimum of three anchors are all that is needed for determining the two-dimensional position, $(x,y)$, of the tag via trilateration.
 Losing a single anchor would, therefore, allow for the $(x,y)$ position to be determined with a fair amount of accuracy with discrepancies showing up in the z position readings.
-To test this data was recorded starting with all four anchors and then systematically one anchor was turned of in each sample.
+To test this data was recorded, starting with all four anchors and then systematically one anchor was turned of in each sample.
 Figure:~\ref{fig:Loss_anchors} shows the plots obtained under this test.
 It can be seen that the $(x,y)$ position remains relatively unchanged in all with only a notable shift the z position with the loss of Anchor 1 and more noise introduced with the loss of Anchor 4.
 
@@ -37,7 +38,7 @@ It can be seen that the $(x,y)$ position remains relatively unchanged in all wit
 \end{figure}
 \newpage
 \subsection{No Line of Sight}\label{subsec:no-line-of-sight}
-The positioning calculations are based on a Two way ranging and Time of flight Calculation scheme see Appendix:~\ref{app:app01}.
+The positioning calculations are based on a Two way ranging and Time of flight calculation scheme (see Appendix:~\ref{app:app01}).
 The major crux of the calculation is that the wave is always moving at the speed of light this means that introducing an obstacle between any anchor and the tag that attenuates the signal would introduce discrepancies in the results obtained.
 Figure:~\ref{fig:nlos} shows the setup used to test this scenario.
 The system was allowed to record data with no obstacles then a person walked along the trajectory indicated by the dotted arrows in the Figure and came to a rest as seen.
@@ -49,13 +50,13 @@ This was carried out 3 times:
     \item Position 3: Provides NLOS between Anchor 4 and the tag.
 \end{enumerate}
 Position 2 was done to confirm that no reflections or attenuation occur with a person just being in the proximity of the tag.
-From Figure:~\ref{fig:persons} we can see that a person being introduced at position 1 and which obstructs the line of sight between an anchor and the tag has adverse effects.
+From Figure:~\ref{fig:persons} we can see that a person being introduced at position 1 obstructs the line of sight between an anchor and the tag and has adverse effects.
 It is clear that the 2 distinct blobs seen in the plots for position 1 and 3 show that the tag's 'position' has changed although it is stationary.
 
 \begin{figure}[h!]
     \centering
     \includegraphics{mtd/loss_of_ppl}
-    \caption{The test scenario for NLOS experiment}
+    \caption{The test scenario for No Line of Sight experiment}
     \label{fig:nlos}
 \end{figure}
 
@@ -77,5 +78,5 @@ It is clear that the 2 distinct blobs seen in the plots for position 1 and 3 sho
     \label{fig:persons}
 \end{figure}
 As it stands, NLOS is the major factor affecting the operation of the system and the accuracy of the raw readings.
-As such it is proposed that additional layers be added to process this position data and try to improve the positional accuracy of the system and make it robust.
+As such it was proposed that additional layers be added to process this position data and try to improve the positional accuracy of the system and make it robust.
 

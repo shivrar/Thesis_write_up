@@ -14,7 +14,7 @@ All of the units have the standard UART, PWM and I2C interfaces in addition to o
 At the time of writing the Pixhawk series of FCU's are the most common and oldest systems.
 They have all the standard interfaces as well as several sensors allowing making them a keen choice for developers and researchers in a plug and play platform.
 Many in the series share the same interfaces with some of the smaller boards excluding some of the less popular interfaces.
-As such, to allow for flexibility in the technical design one of the Pixhawk families was desirable for this research.
+As such, to allow for flexibility in the technical design the Pixhawk line was chosen for this research.
 After deliberation and consulting the objectives and scope of this research it was determined that a basic Pixhawk would be satiable.
 Figure:~\ref{fig:pix} shows the board chosen, it was shipped quickly and it contains everything necessary to meet the objectives of the project allowing for quick prototyping and proof of concepts.
 
@@ -43,9 +43,11 @@ Figure:~\ref{fig:pix} shows the board chosen, it was shipped quickly and it cont
         PXFmini & Raspberry Pi & b, m & CC BY-NC-SA & a\\
         \hline
     \end{tabular}
-    \caption{Comparisons of various FCU's that are commercially available. Source: ~\citet{ebeid2018survey} Page: 2.}
+    \caption{Comparisons of various FCU's that are commercially available.
+    Source: ~\citet{ebeid2018survey} Page: 2.}
     \label{tb:comparison}
-    b: barometer, m: magnetometer, p: pitot tube sensor, c: CAN, s: SPI, a: ADC, pp:
+
+b: barometer, m: magnetometer, p: pitot tube sensor, c: CAN, s: SPI, a: ADC, pp:
 PPM, sb: S.BUS, ds: DSM, da: DAC, x: XBEE, au: AUX, [d]: discontinued.
 \end{table}
 
@@ -67,7 +69,7 @@ Both support a large array of vehicles but the major differences come from the l
 Without delving into the technicalities of the licenses it is often summarised that PX4 is attractive to business owners who want to protect their property whilst Ardupilot pushes for changes to be put back into the main codebase.
 Additionally, from a quick brief and use of each of the firmware, Ardupilot is slightly more documented due to its general public license and a bit more user friendly in terms of compilation and flashing firmware thanks to its pythonic based wrapper for compilation and uploading.
 Since both firmware cover all the generic UAV types and there was no need for any niche systems Ardupilot was chosen as the primary codebase.
-It is worth noting that there is a subsection of the Ardupilot codebase is dedicated to Beacon based positioning systems which a previous Pozyx implementation is coded ~\cite{ardupilotarduino}.
+It is worth noting that there is a subsection of the Ardupilot codebase dedicated to Beacon based positioning systems which a previous Pozyx implementation is coded ~\citep{ardupilotarduino}.
 
 \subsection{Communication Interface (I2C vs Serial)}\label{subsec:communication-interfacei2c-vs-serial}
 As mentioned in Chapter:~\ref{ch:literature-review} there is an implementation of using a Pozyx system in a GPS denied scenario ~\cite{ardupilotarduino}.
@@ -76,13 +78,13 @@ A critique of this approach, however, is that it uses an additional Arduino Uno 
 Given the availability of the standard interfaces onboard the Pixhawk and the scope and objectives of this research project, it is feasible that the Uno can be stubbed out of this experiment and data can be integrated directly onto the Pixhawk.
 This means the physical integration of the system can be summarised into the following steps:
 \begin{itemize}
-    \item Choose a suitable interface.
-    \item Place the code within a suitable section of the codebase.
+    \item Choosing a suitable interface.
+    \item Placing the code within a suitable section of the codebase.
     \item Utilise the parent class of the section of the Ardupilot to integrate the sensor.
     \item After testing the base functionality, integrate the new library within the background scheduler so it can run and feed measurements in the background to the copter main code.
 \end{itemize}
 
-An Arduino ~\cite{pozarduino} and python libraries were originally designed by the Pozyx developers so it provided an algorithmic starting point for the functionality of the library being designed.
+An Arduino ~\citep{pozarduino} and python libraries were originally designed by the Pozyx developers so it provided an algorithmic starting point for the functionality of the library being designed.
 The Arduino library is based around the I2C protocol whilst the python module uses the serial interface.
 As noted by the developers the python module is a port of the Arduino library and there are no plans to maintain the code and address bug fixes, as such the Arduino library was studied fo to build the new AP\_Bacon extension.
 Furthermore, the I2C interface was designed onboard an embedded system so much of the flow can be ported effectively to the Pixhawk.
@@ -121,7 +123,7 @@ As mentioned in Chapter:~\ref{ch:literature-review} sensor fusion forms the basi
 The de facto one used in navigation and localisation happens to be the Extended Kalman Filter (EKF).
 The Ardupilot codebase implements an EKF to estimate 24 states.
 The state being affected by the implementation will be the position estimates given in North, East, Down (NED) frame.
-NED reference frame is similar to the standard left-handed notation used in several standard robotic systems with the major difference being the Down axis which is opposite in direction to the standard Z axis in robotic systems.
+The NED reference frame is similar to the standard left-handed notation used in several standard robotic systems with the major difference being the Down axis which is opposite in direction to the standard Z axis in robotic systems.
 The developers of the Pozyx system, ~\cite{pozyx2018pozyx}, designed the firmware of the tag in such a way that obtaining information or triggering any functions are done with sequential reading and writing operations to various registers on the tag.
 ~\citet{devregs} lists all the functionality of the tag via the registers.
 From the registers, it is possible to obtain both the distances of the tag to each anchor as well as the position of the tag within the workspace.
@@ -178,7 +180,7 @@ As discussed in Section:~\ref{sec:sensor_fusion} and the preceding section an EK
 The major driving force for using an EKF over other filters and estimators was to mimic the Ardupilot setup as closely as possible as to give hints for future work and testing of the UAV whilst in flight.
 Once again the tag will be operated in 2.5 dimensions in tracking mode to determine if the system can withstand NLOS when dynamic obstacles are introduced into the environment.
 Similar to the setup in Section:~\ref{sec:op-params} the tag was allowed to operate and record in various scenarios while static and moving.
-It should be noted that since we are operating in 2.5 dimensions only two state filter will be implemented.
+It should be noted that since we are operating in 2.5 dimensions a two state filter will be implemented.
 Furthermore, since the tag outputs direct measurements of the state the matrices are simplified and easy to implement.
 
 System equations:
@@ -235,8 +237,8 @@ Outliers arose due to sudden jerks in motion causing the measurements coming out
 The above EKF design represents a pure pythonic approach using only the readings from the sensor.
 Given that it only has once set of observations it can be considered a simple filter rather than a state estimator.
 To emulate the process that should run on the Pixhawk is is desirable to actually incorporate another stream of measurements that would improve the position estimates.
-To this end, a simple EKF was applied on a simple wheeled mobile robot running dead reckoning localisation.
-Without delving too much into the technicalities of the code since that was outside the scope of the project the robot sensors can be simplified to outputting the $(x,y)$ position based on left and right wheel encoder readings.
+To this end, an EKF was applied on a wheeled mobile robot running dead reckoning localisation.
+To easily fuse the dead reckoning readings, the robot sensors were simplified to outputting the $(x,y)$ position based on left and right wheel encoder readings.
 Additionally, the board is Arduino based so integration with the Pozyx system is straightforward.
 Figure:~\ref{fig:poz_romi} shows how this system was connected and used.
 
@@ -302,8 +304,7 @@ Linearised observation model:
 
 \section{Summary}
 This section thoroughly discussed the methodology and design process used to achieve the objectives and scope of this research.
-Although the Ardupilot based EKF onboard the Pixhawk FCU could not be used to get position estimates due to several
-limitations and scoping of this project, the feasibility of an EKF, in general, was explored as a method of improving the
+Although Ardupilo'st EKF could not be used due to several limitations and scoping of this project, the feasibility of an EKF, in general, was explored as a method of improving the
 overall position estimates of the system which can then be extended for use in the future within an Ardupilot based FCU without the current limitations.
 In the next chapter the results of the EKF will be presented under various scenarios to show the effectiveness and limitations of the Pozyx sensor in a household environment.
 %\lipsum[2-6]
