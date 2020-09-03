@@ -18,6 +18,9 @@ There was no drone readily available to test the new software on and there was n
 Additionally, having no UAV available hindered the testing on the FCU since the FCU had to be in flight in order for the EKF to use the Pozyx readings in the position estimates.
 To compensate for the lack of position estimates from the Pixhawk and Ardupilot, another robot was used that provided dead reckoning data.
 This was suitable for the scenario since a similar approach is employed in Ardupilot although how the dead reckoning estimates were generated is different due to it being a different vehicle/actuated system.
+Furthermore, the lack of an actual laboratory space constrained what tests could be done.
+Using a shared space meant that experiments had to be confined to a single counter-top and measurements were made as accurate as possible without the use of any external tools that would be available in the laboratory.
 Future work and extension of this research would be to actually test the developed AP\_Beacon system on an UAV and compare the pose estimates while in flight to the ground truth estimates.
 Furthermore, the de-scoped objective of actually navigating the UAV would be another extension of this research and work towards a completely viable indoor navigation system.
+A final extension of this work would be to extensively test the EKF estimates to track and localise a person within the workspace without being confined to a specific area.
 %\lipsum[2-8]
