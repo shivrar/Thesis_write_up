@@ -6,14 +6,14 @@ At a high level the project was split into three modules that was researched, un
 Figure ~\ref{fig:ds} highlights the major systems within the project and they are listed:
 \begin{itemize}
     \item The Pozyx LPS providing measurements that will be used in localisation.
-    \item A flight controller collating fusing various observations from sensors to provide a pose estimate.
+    \item A flight controller collating and fusing various observations from sensors to provide a pose estimate.
     \item A companion computer to visualise and utilise the pose information in a meaningful manner.
 \end{itemize}
 
 From these systems, with the overall aim of indoor localisation, the following objectives were created:
 \begin{itemize}
     \item Evaluation and qualitative analysis of the LPS, documented limitations from previously done work and current physical setups.
-    \item Based on the qualitative analysis and experiments determine the best configuration in a household to place the anchors for the system.
+    \item Based on the qualitative analysis and experiments, determine the best configuration in a household to place the anchors for the system.
     \item Use the incoming data from the sensors to produce a suitable measurement/observation model for the pose of the system.
     \item Relay the data to a flight controller unit via a suitable hardware interface.
     \item Delve into the firmware of the flight controller and integrate the sensor readings into the codebase.

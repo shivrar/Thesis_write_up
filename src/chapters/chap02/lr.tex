@@ -54,8 +54,8 @@ It is noted by the authors that a ranging approach with BLE is challenging since
 \end{figure}
 
 \section{Sensor Fusion}\label{sec:sensor_fusion}
-Appendix:~\ref{app:app01} describes the basic operation of the Pozyx system which is based on Time of Flight (TOF) calculations.
-With a tag it is possible determine a rough estimate of the position in a given reference frame.
+Appendix~\ref{app:app01} describes the basic operation of the Pozyx system which is based on Time of Flight (TOF) calculations.
+With a tag it is possible to determine a rough estimate of the position in a given reference frame.
 Additionally, the tag has an Inertial Measurement Unit (IMU), consisting of an Accelerometer, Gyroscope, Magnetometer and an Altimeter.
 These are used in one of the operational modes of the Pozyx system in order to improve accuracy.
 Sensor fusion combines multiple sources of data in order to get a fairly accurate estimate of the pose of the system,
@@ -76,7 +76,7 @@ The steps for the EKF are as follows:
 \end{enumerate}
 Where K represents the Kalman gain, R is the Measurement Noise Covariance Matrix, Q is the Process Noise Covariance matrix.
 %TODO: Look at add in another sensor fusion for indoor navigation here-> Look at the online wiki i did lol
-~\citet{tsai1998localization} document work for localising a mobile robot using ultrasonic measurements.
+~\citet{tsai1998localization} documented work for localising a mobile robot using ultrasonic measurements.
 Although, the system was a wheeled mobile robot instead of a UAV, the calculations using the TOF measurements and dead reckoning data as well as the use of an EKF to improve the pose estimates are similar to what is trying to be achieved in this current project.
 A notable contribution of the work is the use of a voting scheme to obtain the best 'observation' for the robot's orientation before being fed into the EKF algorithm.
 

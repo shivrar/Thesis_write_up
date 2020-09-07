@@ -1,16 +1,16 @@
 \chapter{Results and Analysis}\label{ch:results-and-analysis}
-\initial{T}o document the effectiveness of the Pozyx setup results were gathered in several scenarios as seen in Chapter:~\ref{ch:design-experiments}.
+\initial{T}o document the effectiveness of the Pozyx setup results were gathered in several scenarios as seen in Chapter~\ref{ch:design-experiments}.
 From a qualitative point, the embedded EKF fusing the dead reckoning data and tag data seems to outperform the other methods in terms of falling close to the actual path and being robust to the erratic behaviour introduced by No Line of Sight.
 The plots also highlight a major issue that arose when the tag was in motion and there was No Line of Sight between one of the anchors and the tag.
-Although it was easy to pinpoint the major issues from the plots, a quantitative measure was required to soldify the findings.
+Although it was easy to pinpoint the major issues from the plots, a quantitative measure was required to solidify the findings.
 A useful metric would be to see the distance from the supposed positions to the path being traveled.
-Since the robot moved autonomously and there was no perception of where it should be at a given time and a way of effectively measuring the distance to the path needed to be designed.
-Figure:~\ref{fig:dist} shows what is available while data is being recorded.
+Since the robot moved autonomously and there was no perception of where it should be at a given time, a way of effectively measuring the distance to the path needed to be designed.
+Figure~\ref{fig:dist} shows what is available while data is being recorded.
 The green arrows represent the minimum distance for a candidate point and the path.
-Appendix:~\ref{app:app04} shows the general pseudo-code to obtain the green distance for each point.
+Appendix~\ref{app:app04} shows the general pseudo-code to obtain the green distance for each point.
 A benefit of using a distance metric is that it is easy to interpret and ideally should be zero if the pose estimates are completely accurate.
 This also means that standard statistics on this distance metric would give a clear indication of which method produced the best results.
-Table:~\ref{tb:results} shows the final metrics obtained for the various results.
+Table~\ref{tb:results} shows the final metrics obtained for the various results.
 The table is color coded to indicate what the inputs to the EKF are for each test.
 In addition to the EKF fused results, the statistics for the tag and dead reckoning positions were included to set a benchmark for comparison.
 As expected the estimates combining the dead reckoning and tag readings clearly outperforms the others.
