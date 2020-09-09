@@ -1,13 +1,15 @@
-\chapter{Discussion}\label{ch:discussion}
+\chapter{Discussion and Conclusion}\label{ch:discussion}
 \initial{I}n Chapters:~\ref{ch:intro} and ~\ref{ch:literature-review} the use and efficacy of using a UWB based system for localisation was explored.
 Although many of the research dived into the localisation not many highlighted the use in real-life scenarios and environments.
 In the previous research, the systems researched the use in GPS denied environments but not much covered the cases of dynamic obstacles in the environment that provide NLOS and hence errors in TOF calculations.
 As mentioned previously, ~\citet{evaluwb} provide a comprehensive analysis and evaluation of localisation based on the Pozyx system but it addressed the issues of static obstacles with NLOS.
 The gap of research addressing dynamic obstacles in the environment using the UWB Pozyx sensor is where this research comes in.
-The aim of this research can be split into two broad tasks:
+The aim of this research can be summarised into the following tasks:
 \begin{enumerate}
+    \item Evaluate previous work with the Pozyx system and determine a suitable configuration for the test environment.
     \item Show it is possible for an FCU to receive and use the Pozyx sensor readings.
     \item Evaluate an approach to use the sensor readings to get viable position estimates.
+    \item Test the discussed approach in non ideal scenarios.
 \end{enumerate}
 
 From Section~\ref{sec:technical-design} it is shown that it is possible to pipe the information from the tag to the Pixhawk unit through its I2C interface.
@@ -32,4 +34,5 @@ Ardupilot also uses dead reckoning in its EKF so employing one here addresses th
 From the distance metrics seen in Table~\ref{tb:results} it is clear to see that a simple fusion of data is able to increase the position estimates greatly with the max distance from line (8.7cm) being better than the quoted accuracy of the Pozyx system ($\pm10$cm) even with NLOS present.
 In general, the closer any of the distance metrics are to zero the better the positioning result.
 
+\input{chapters/chap06/conclusion}
 %\lipsum[2-8]

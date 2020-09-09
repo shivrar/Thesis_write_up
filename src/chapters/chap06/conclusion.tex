@@ -1,4 +1,4 @@
-\chapter{Conclusion}\label{ch:conclusion}
+%\chapter{Conclusion}\label{ch:conclusion}
 \section{Conclusions}\label{sec:conclusions}
 \initial{T}hroughout this research the idea of using a commercially available UWB sensor system for indoor localisation was thoroughly checked.
 In addressing the research question and objectives, a software engineering approach was employed to select various hardware options.
@@ -11,10 +11,15 @@ This showed that the Pozyx system alone cannot be used for localisation and navi
 However, as with any robotic or UAV system, it is not expected that only one sensor would be used to generate position estimates.
 As seen from the Table~\ref{tb:results} the use of an EKF with a simple model and dead reckoning measurements of position greatly improved the position estimates and it is expected that any system that employs this, such as the Ardupilot codebase, should be able to get better position estimates in order to carry out
 their autonomous tasks.
+Comparing the obtained results with those from ~\citet{di2019evaluation} it can be seen that the max and mean distance errors are similar when operating in the tracking mode in both scenarios.
+The results using the EKF with the tag readings from this research achieved an average max and mean error of 0.239m and 0.0743m.
+This is an improvement of the results seen in the evaluation by ~\citet{di2019evaluation} which used the Pozyx tag's raw readings.
+The results obtained from the combination of the Pozyx tag readings and the dead reckoning data from the mobile robot corroborated with the results from ~\citet{conceiccao2017robot} that used a similar EKF localisation scheme.
+In summary, fusing an additional source of information improves the position estimates regardless of the source of the errors.
 
-\section{Limitations, Mitigation and Future Work}\label{sec:limitations,-mitigations-and-future-work}
+\subsection{Limitations, Mitigation and Future Work}\label{sec:limitations,-mitigations-and-future-work}
 Due to the current pandemic situation, some of the major objectives of the research project had to be changed.
-Initially, it was planned that a UAV would be flown autonomously indoors utilising the poses from the FCU in a higher level planner but due to the closing of the labs this objective was removed.
+Initially, it was planned that a UAV would be flown autonomously indoors utilising the poses from the FCU in a higher level planner but due to the closing of the laboratories this objective was removed.
 There was no drone readily available to test the new software on and there was no way to easily determine the ground truth positions of the UAV while in flight.
 Additionally, having no UAV available hindered the testing on the FCU since the FCU had to be in flight in order for the EKF to use the Pozyx readings in the position estimates.
 To compensate for the lack of position estimates from the Pixhawk and Ardupilot, another robot was used that provided dead reckoning data.
